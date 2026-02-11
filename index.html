@@ -8,16 +8,123 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @media print {
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+            
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            
             .no-print { display: none !important; }
-            body { background-color: white !important; padding: 0 !important; }
-            .form-container { border: 2px solid black !important; box-shadow: none !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; }
-            textarea { border: none !important; resize: none !important; }
+            
+            body { 
+                background-color: white !important; 
+                padding: 0 !important; 
+                margin: 0 !important;
+                width: 100% !important;
+            }
+            
+            .form-container { 
+                border: 2px solid black !important; 
+                box-shadow: none !important; 
+                width: 100% !important; 
+                max-width: 100% !important; 
+                margin: 0 !important;
+                page-break-after: auto !important;
+            }
+            
+            /* Evita quebra de página dentro de elementos */
+            .grid, table, .section {
+                page-break-inside: avoid !important;
+            }
+            
+            /* Mantém seções juntas */
+            .border-b-2 {
+                page-break-inside: avoid !important;
+            }
+            
+            textarea { 
+                border: 1px solid #ccc !important; 
+                resize: none !important;
+                overflow: hidden !important;
+                page-break-inside: avoid !important;
+            }
+            
             /* Mantém a numeração das fotos visível no PDF */
-            .foto-numero { display: block !important; }
+            .foto-numero { 
+                display: block !important; 
+                background-color: rgba(0, 0, 0, 0.8) !important;
+            }
+            
             /* Oculta ícone de câmera no PDF */
             .camera-icon { display: none !important; }
+            
+            /* Garante que as fotos mantenham proporção */
+            .aspect-square {
+                height: auto !important;
+                min-height: 150px !important;
+            }
+            
+            /* Garante cores de fundo */
+            .bg-black {
+                background-color: #000000 !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            
+            .bg-gray-50 {
+                background-color: #f9fafb !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            
+            .bg-gray-100 {
+                background-color: #f3f4f6 !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            
+            /* Garante bordas visíveis */
+            .border-black {
+                border-color: #000000 !important;
+            }
+            
+            .border-2 {
+                border-width: 2px !important;
+            }
+            
+            .border {
+                border-width: 1px !important;
+            }
+            
+            /* Assinaturas */
+            canvas {
+                page-break-inside: avoid !important;
+                border: 2px solid #d1d5db !important;
+            }
+            
+            /* Tabelas */
+            table {
+                page-break-inside: auto !important;
+            }
+            
+            tr {
+                page-break-inside: avoid !important;
+                page-break-after: auto !important;
+            }
+            
+            thead {
+                display: table-header-group !important;
+            }
+            
+            tfoot {
+                display: table-footer-group !important;
+            }
         }
+        
         .aspect-square { aspect-ratio: 1 / 1; }
+        
         .foto-numero {
             position: absolute;
             bottom: 4px;
