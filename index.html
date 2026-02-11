@@ -34,17 +34,62 @@
                 width: 100% !important; 
                 max-width: 100% !important; 
                 margin: 0 !important;
-                page-break-after: auto !important;
             }
             
-            /* Evita quebra de página dentro de elementos */
-            .grid, table, .section {
+            /* Previne quebra de página dentro de seções críticas */
+            .section-header,
+            .header-row,
+            .client-data,
+            .checkbox-section,
+            .form-section {
                 page-break-inside: avoid !important;
+                break-inside: avoid !important;
             }
             
-            /* Mantém seções juntas */
-            .border-b-2 {
+            /* Grid de fotos - permite quebra entre linhas mas não dentro delas */
+            .photo-grid {
+                page-break-inside: auto !important;
+            }
+            
+            .photo-row {
                 page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                display: flex !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            /* Observações - fica junto com as fotos se possível */
+            .observations-section {
+                page-break-before: avoid !important;
+            }
+            
+            /* Seções de formulário */
+            .visit-form,
+            .quantity-table,
+            .obs-section,
+            .actions-section {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            
+            /* Tabela - mantém cabeçalho em cada página */
+            table {
+                page-break-inside: auto !important;
+            }
+            
+            thead {
+                display: table-header-group !important;
+            }
+            
+            tr {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            
+            /* Assinaturas sempre juntas */
+            .signatures-section {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
             }
             
             textarea { 
@@ -54,22 +99,19 @@
                 page-break-inside: avoid !important;
             }
             
-            /* Mantém a numeração das fotos visível no PDF */
             .foto-numero { 
                 display: block !important; 
                 background-color: rgba(0, 0, 0, 0.8) !important;
             }
             
-            /* Oculta ícone de câmera no PDF */
             .camera-icon { display: none !important; }
             
-            /* Garante que as fotos mantenham proporção */
             .aspect-square {
                 height: auto !important;
-                min-height: 150px !important;
+                min-height: 120px !important;
+                max-height: 150px !important;
             }
             
-            /* Garante cores de fundo */
             .bg-black {
                 background-color: #000000 !important;
                 -webkit-print-color-adjust: exact !important;
@@ -85,7 +127,6 @@
                 -webkit-print-color-adjust: exact !important;
             }
             
-            /* Garante bordas visíveis */
             .border-black {
                 border-color: #000000 !important;
             }
@@ -94,32 +135,17 @@
                 border-width: 2px !important;
             }
             
-            .border {
-                border-width: 1px !important;
-            }
-            
-            /* Assinaturas */
             canvas {
                 page-break-inside: avoid !important;
                 border: 2px solid #d1d5db !important;
             }
             
-            /* Tabelas */
-            table {
-                page-break-inside: auto !important;
-            }
-            
-            tr {
-                page-break-inside: avoid !important;
-                page-break-after: auto !important;
-            }
-            
-            thead {
-                display: table-header-group !important;
-            }
-            
-            tfoot {
-                display: table-footer-group !important;
+            /* Força margens menores em seções específicas */
+            .compact-section {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                padding-top: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
             }
         }
         
@@ -154,7 +180,7 @@
         <!-- Formulário Principal -->
         <div id="form-content" class="bg-white border-2 border-black shadow-xl form-container">
             <!-- Cabeçalho -->
-            <div class="grid grid-cols-3 border-b-2 border-black">
+            <div class="grid grid-cols-3 border-b-2 border-black header-row">
                 <div class="p-4 border-r-2 border-black flex flex-col items-center justify-center bg-gray-50">
                     <div class="text-4xl font-bold text-red-600">⊙</div>
                     <div class="font-bold text-sm">SUPERGASBRAS</div>
@@ -175,7 +201,7 @@
             </div>
 
             <!-- Checkboxes -->
-            <div class="p-4 border-b-2 border-black grid grid-cols-3 gap-4">
+            <div class="p-4 border-b-2 border-black grid grid-cols-3 gap-4 checkbox-section">
                 <label class="flex items-center gap-2 text-xs font-bold">
                     <input type="checkbox" checked> NOVO CLIENTE
                 </label>
@@ -188,7 +214,7 @@
             </div>
 
             <!-- Dados do Cliente -->
-            <div class="p-4 border-b-2 border-black grid grid-cols-2 gap-4">
+            <div class="p-4 border-b-2 border-black grid grid-cols-2 gap-4 client-data">
                 <div class="space-y-2">
                     <div>
                         <label class="text-[10px] font-bold block">RAZÃO SOCIAL:</label>
@@ -221,235 +247,257 @@
             <div class="grid grid-cols-3 border-b-2 border-black">
                 <div class="col-span-2 p-4 border-r-2 border-black">
                     <h3 class="text-xs font-bold mb-4 uppercase">Fotos do Local</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(1)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
-                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
-                            <input type="file" id="file-1" class="hidden" accept="image/*" onchange="handleFile(1, event)">
-                            <img id="img-1" class="absolute inset-0 w-full h-full object-cover hidden">
-                            <span class="foto-numero">Foto 1</span>
+                    <div class="photo-grid">
+                        <!-- Linha 1 -->
+                        <div class="photo-row grid grid-cols-2 gap-4 mb-4">
+                            <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(1)">
+                                <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                                <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                                <input type="file" id="file-1" class="hidden" accept="image/*" onchange="handleFile(1, event)">
+                                <img id="img-1" class="absolute inset-0 w-full h-full object-cover hidden">
+                                <span class="foto-numero">Foto 1</span>
+                            </div>
+                            <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(2)">
+                                <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                                <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                                <input type="file" id="file-2" class="hidden" accept="image/*" onchange="handleFile(2, event)">
+                                <img id="img-2" class="absolute inset-0 w-full h-full object-cover hidden">
+                                <span class="foto-numero">Foto 2</span>
+                            </div>
                         </div>
-                        <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(2)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
-                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
-                            <input type="file" id="file-2" class="hidden" accept="image/*" onchange="handleFile(2, event)">
-                            <img id="img-2" class="absolute inset-0 w-full h-full object-cover hidden">
-                            <span class="foto-numero">Foto 2</span>
+                        <!-- Linha 2 -->
+                        <div class="photo-row grid grid-cols-2 gap-4 mb-4">
+                            <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(3)">
+                                <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                                <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                                <input type="file" id="file-3" class="hidden" accept="image/*" onchange="handleFile(3, event)">
+                                <img id="img-3" class="absolute inset-0 w-full h-full object-cover hidden">
+                                <span class="foto-numero">Foto 3</span>
+                            </div>
+                            <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(4)">
+                                <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                                <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                                <input type="file" id="file-4" class="hidden" accept="image/*" onchange="handleFile(4, event)">
+                                <img id="img-4" class="absolute inset-0 w-full h-full object-cover hidden">
+                                <span class="foto-numero">Foto 4</span>
+                            </div>
                         </div>
-                        <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(3)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
-                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
-                            <input type="file" id="file-3" class="hidden" accept="image/*" onchange="handleFile(3, event)">
-                            <img id="img-3" class="absolute inset-0 w-full h-full object-cover hidden">
-                            <span class="foto-numero">Foto 3</span>
+                        <!-- Linha 3 -->
+                        <div class="photo-row grid grid-cols-2 gap-4 mb-4">
+                            <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(5)">
+                                <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                                <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                                <input type="file" id="file-5" class="hidden" accept="image/*" onchange="handleFile(5, event)">
+                                <img id="img-5" class="absolute inset-0 w-full h-full object-cover hidden">
+                                <span class="foto-numero">Foto 5</span>
+                            </div>
+                            <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(6)">
+                                <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                                <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                                <input type="file" id="file-6" class="hidden" accept="image/*" onchange="handleFile(6, event)">
+                                <img id="img-6" class="absolute inset-0 w-full h-full object-cover hidden">
+                                <span class="foto-numero">Foto 6</span>
+                            </div>
                         </div>
-                        <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(4)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
-                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
-                            <input type="file" id="file-4" class="hidden" accept="image/*" onchange="handleFile(4, event)">
-                            <img id="img-4" class="absolute inset-0 w-full h-full object-cover hidden">
-                            <span class="foto-numero">Foto 4</span>
-                        </div>
-                        <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(5)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
-                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
-                            <input type="file" id="file-5" class="hidden" accept="image/*" onchange="handleFile(5, event)">
-                            <img id="img-5" class="absolute inset-0 w-full h-full object-cover hidden">
-                            <span class="foto-numero">Foto 5</span>
-                        </div>
-                        <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(6)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
-                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
-                            <input type="file" id="file-6" class="hidden" accept="image/*" onchange="handleFile(6, event)">
-                            <img id="img-6" class="absolute inset-0 w-full h-full object-cover hidden">
-                            <span class="foto-numero">Foto 6</span>
-                        </div>
-                        <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(7)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
-                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
-                            <input type="file" id="file-7" class="hidden" accept="image/*" onchange="handleFile(7, event)">
-                            <img id="img-7" class="absolute inset-0 w-full h-full object-cover hidden">
-                            <span class="foto-numero">Foto 7</span>
-                        </div>
-                        <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(8)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
-                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
-                            <input type="file" id="file-8" class="hidden" accept="image/*" onchange="handleFile(8, event)">
-                            <img id="img-8" class="absolute inset-0 w-full h-full object-cover hidden">
-                            <span class="foto-numero">Foto 8</span>
+                        <!-- Linha 4 -->
+                        <div class="photo-row grid grid-cols-2 gap-4">
+                            <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(7)">
+                                <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                                <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                                <input type="file" id="file-7" class="hidden" accept="image/*" onchange="handleFile(7, event)">
+                                <img id="img-7" class="absolute inset-0 w-full h-full object-cover hidden">
+                                <span class="foto-numero">Foto 7</span>
+                            </div>
+                            <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(8)">
+                                <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                                <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                                <input type="file" id="file-8" class="hidden" accept="image/*" onchange="handleFile(8, event)">
+                                <img id="img-8" class="absolute inset-0 w-full h-full object-cover hidden">
+                                <span class="foto-numero">Foto 8</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="p-4 bg-gray-50">
+                <div class="p-4 bg-gray-50 observations-section">
                     <h3 class="text-xs font-bold mb-2 uppercase">Observações</h3>
                     <textarea class="w-full h-[calc(100%-2rem)] border border-gray-300 p-2 text-xs resize-none" placeholder="Digite aqui as observações técnicas..."></textarea>
                 </div>
             </div>
 
             <!-- Formulário de Visita -->
-            <div class="bg-black text-white p-2 text-xs font-bold uppercase">Formulário de visita do projetista</div>
-            <div class="p-4 border-b-2 border-black space-y-2">
-                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                    <span class="text-[10px] font-bold">Central está pronta de acordo com norma vigente?</span>
-                    <div class="flex gap-4">
-                        <label class="text-[10px]"><input type="radio" name="q1" checked> SIM</label>
-                        <label class="text-[10px]"><input type="radio" name="q1"> NÃO</label>
+            <div class="visit-form">
+                <div class="bg-black text-white p-2 text-xs font-bold uppercase section-header">Formulário de visita do projetista</div>
+                <div class="p-4 border-b-2 border-black space-y-2 compact-section">
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                        <span class="text-[10px] font-bold">Central está pronta de acordo com norma vigente?</span>
+                        <div class="flex gap-4">
+                            <label class="text-[10px]"><input type="radio" name="q1" checked> SIM</label>
+                            <label class="text-[10px]"><input type="radio" name="q1"> NÃO</label>
+                        </div>
                     </div>
-                </div>
-                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                    <span class="text-[10px] font-bold">Alvenaria da central (pórtico, piso, reboco, telhado)?</span>
-                    <div class="flex gap-4">
-                        <label class="text-[10px]"><input type="radio" name="q2" checked> SIM</label>
-                        <label class="text-[10px]"><input type="radio" name="q2"> NÃO</label>
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                        <span class="text-[10px] font-bold">Alvenaria da central (pórtico, piso, reboco, telhado)?</span>
+                        <div class="flex gap-4">
+                            <label class="text-[10px]"><input type="radio" name="q2" checked> SIM</label>
+                            <label class="text-[10px]"><input type="radio" name="q2"> NÃO</label>
+                        </div>
                     </div>
-                </div>
-                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                    <span class="text-[10px] font-bold">Tanque pode ser enviado com PN?</span>
-                    <div class="flex gap-4">
-                        <label class="text-[10px]"><input type="radio" name="q3" checked> SIM</label>
-                        <label class="text-[10px]"><input type="radio" name="q3"> NÃO</label>
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                        <span class="text-[10px] font-bold">Tanque pode ser enviado com PN?</span>
+                        <div class="flex gap-4">
+                            <label class="text-[10px]"><input type="radio" name="q3" checked> SIM</label>
+                            <label class="text-[10px]"><input type="radio" name="q3"> NÃO</label>
+                        </div>
                     </div>
-                </div>
-                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                    <span class="text-[10px] font-bold">Rede conecta?</span>
-                    <div class="flex gap-4">
-                        <label class="text-[10px]"><input type="radio" name="q4"> SIM</label>
-                        <label class="text-[10px]"><input type="radio" name="q4"> NÃO</label>
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                        <span class="text-[10px] font-bold">Rede conecta?</span>
+                        <div class="flex gap-4">
+                            <label class="text-[10px]"><input type="radio" name="q4"> SIM</label>
+                            <label class="text-[10px]"><input type="radio" name="q4"> NÃO</label>
+                        </div>
                     </div>
-                </div>
-                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                    <span class="text-[10px] font-bold">Ponto de consumo precisa alterar quantidade?</span>
-                    <div class="flex gap-4">
-                        <label class="text-[10px]"><input type="radio" name="q5"> SIM</label>
-                        <label class="text-[10px]"><input type="radio" name="q5"> NÃO</label>
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                        <span class="text-[10px] font-bold">Ponto de consumo precisa alterar quantidade?</span>
+                        <div class="flex gap-4">
+                            <label class="text-[10px]"><input type="radio" name="q5"> SIM</label>
+                            <label class="text-[10px]"><input type="radio" name="q5"> NÃO</label>
+                        </div>
                     </div>
-                </div>
-                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                    <span class="text-[10px] font-bold">Cambota Supergasbras plantão em fachadada?</span>
-                    <div class="flex gap-4">
-                        <label class="text-[10px]"><input type="radio" name="q6"> SIM</label>
-                        <label class="text-[10px]"><input type="radio" name="q6"> NÃO</label>
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                        <span class="text-[10px] font-bold">Cambota Supergasbras plantão em fachadada?</span>
+                        <div class="flex gap-4">
+                            <label class="text-[10px]"><input type="radio" name="q6"> SIM</label>
+                            <label class="text-[10px]"><input type="radio" name="q6"> NÃO</label>
+                        </div>
                     </div>
-                </div>
-                <div class="flex justify-between items-center border-b border-gray-200 pb-1">
-                    <span class="text-[10px] font-bold">Central já possui extintor válido e pressurizado?</span>
-                    <div class="flex gap-4">
-                        <label class="text-[10px]"><input type="radio" name="q7"> SIM</label>
-                        <label class="text-[10px]"><input type="radio" name="q7"> NÃO</label>
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+                        <span class="text-[10px] font-bold">Central já possui extintor válido e pressurizado?</span>
+                        <div class="flex gap-4">
+                            <label class="text-[10px]"><input type="radio" name="q7"> SIM</label>
+                            <label class="text-[10px]"><input type="radio" name="q7"> NÃO</label>
+                        </div>
                     </div>
-                </div>
-                <div class="flex items-center gap-4 pt-2">
-                    <span class="text-[10px] font-bold">Sinal de celular:</span>
-                    <label class="text-[10px] flex items-center gap-1"><input type="checkbox"> WiFi</label>
-                    <span class="text-[10px] font-bold">Operadora:</span>
-                    <input type="text" class="border border-gray-300 p-1 text-xs flex-1">
-                </div>
-                <div class="pt-2">
-                    <label class="text-[10px] font-bold block mb-1">Observação:</label>
-                    <textarea class="w-full border border-gray-300 p-2 text-xs resize-none h-16" placeholder="Digite observações..."></textarea>
+                    <div class="flex items-center gap-4 pt-2">
+                        <span class="text-[10px] font-bold">Sinal de celular:</span>
+                        <label class="text-[10px] flex items-center gap-1"><input type="checkbox"> WiFi</label>
+                        <span class="text-[10px] font-bold">Operadora:</span>
+                        <input type="text" class="border border-gray-300 p-1 text-xs flex-1">
+                    </div>
+                    <div class="pt-2">
+                        <label class="text-[10px] font-bold block mb-1">Observação:</label>
+                        <textarea class="w-full border border-gray-300 p-2 text-xs resize-none h-16" placeholder="Digite observações..."></textarea>
+                    </div>
                 </div>
             </div>
 
             <!-- Avaliação de quantitativo/escopo -->
-            <div class="bg-black text-white p-2 text-xs font-bold uppercase">Avaliação de quantitativo/escopo</div>
-            <div class="p-4 border-b-2 border-black">
-                <table class="w-full border-collapse">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="border border-gray-300 p-2 text-[10px] font-bold text-left">Descrição</th>
-                            <th class="border border-gray-300 p-2 text-[10px] font-bold text-center">CPQ</th>
-                            <th class="border border-gray-300 p-2 text-[10px] font-bold text-center">Visita</th>
-                            <th class="border border-gray-300 p-2 text-[10px] font-bold text-center">Projeto</th>
-                            <th class="border border-gray-300 p-2 text-[10px] font-bold text-center">Execução</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="border border-gray-300 p-2 text-[10px]">Quantidade e capacidade dos tanques</td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 p-2 text-[10px]">Bitola e metragem de rede:</td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 p-2 text-[10px]">Quantidade de pontos:</td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 p-2 text-[10px]">Quantidade e tipo de abrigo:</td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 p-2 text-[10px]">m² da parede resistente afofo:</td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 p-2 text-[10px]">Portas m²:</td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 p-2 text-[10px]">Laje m²:</td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="mt-4">
-                    <label class="text-[10px] font-bold block mb-1">Cliente QUER EXECUTAR A GASOMEDROS LTDA:</label>
-                    <textarea class="w-full border border-gray-300 p-2 text-xs resize-none h-16" placeholder="Digite o que o cliente quer executar..."></textarea>
+            <div class="quantity-table">
+                <div class="bg-black text-white p-2 text-xs font-bold uppercase section-header">Avaliação de quantitativo/escopo</div>
+                <div class="p-4 border-b-2 border-black">
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border border-gray-300 p-2 text-[10px] font-bold text-left">Descrição</th>
+                                <th class="border border-gray-300 p-2 text-[10px] font-bold text-center">CPQ</th>
+                                <th class="border border-gray-300 p-2 text-[10px] font-bold text-center">Visita</th>
+                                <th class="border border-gray-300 p-2 text-[10px] font-bold text-center">Projeto</th>
+                                <th class="border border-gray-300 p-2 text-[10px] font-bold text-center">Execução</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 p-2 text-[10px]">Quantidade e capacidade dos tanques</td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2 text-[10px]">Bitola e metragem de rede:</td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2 text-[10px]">Quantidade de pontos:</td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2 text-[10px]">Quantidade e tipo de abrigo:</td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2 text-[10px]">m² da parede resistente afofo:</td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2 text-[10px]">Portas m²:</td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-2 text-[10px]">Laje m²:</td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="mt-4">
+                        <label class="text-[10px] font-bold block mb-1">Cliente QUER EXECUTAR A GASOMEDROS LTDA:</label>
+                        <textarea class="w-full border border-gray-300 p-2 text-xs resize-none h-16" placeholder="Digite o que o cliente quer executar..."></textarea>
+                    </div>
                 </div>
             </div>
 
             <!-- OBS -->
-            <div class="bg-black text-white p-2 text-xs font-bold uppercase">OBS:</div>
-            <div class="p-4 border-b-2 border-black space-y-2">
-                <div class="flex items-center gap-2">
-                    <span class="text-[10px]">➤ Em uma escala de 0 a 10, o nível de DIFICULDADE para equipe LOGÍSTICA é:</span>
-                    <input type="number" min="0" max="10" class="border border-gray-300 p-1 text-xs w-16 text-center">
-                    <span class="text-[10px]">/10</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-[10px]">➤ Em uma escala de 0 a 10, o nível de DIFICULDADE para equipe de MONTAGEM é:</span>
-                    <input type="number" min="0" max="10" class="border border-gray-300 p-1 text-xs w-16 text-center">
-                    <span class="text-[10px]">/10</span>
+            <div class="obs-section">
+                <div class="bg-black text-white p-2 text-xs font-bold uppercase section-header">OBS:</div>
+                <div class="p-4 border-b-2 border-black space-y-2 compact-section">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px]">➤ Em uma escala de 0 a 10, o nível de DIFICULDADE para equipe LOGÍSTICA é:</span>
+                        <input type="number" min="0" max="10" class="border border-gray-300 p-1 text-xs w-16 text-center">
+                        <span class="text-[10px]">/10</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px]">➤ Em uma escala de 0 a 10, o nível de DIFICULDADE para equipe de MONTAGEM é:</span>
+                        <input type="number" min="0" max="10" class="border border-gray-300 p-1 text-xs w-16 text-center">
+                        <span class="text-[10px]">/10</span>
+                    </div>
                 </div>
             </div>
 
             <!-- AÇÕES CLIENTE -->
-            <div class="bg-black text-white p-2 text-xs font-bold uppercase">AÇÕES CLIENTE:</div>
-            <div class="p-4 border-b-2 border-black">
-                <textarea class="w-full border border-gray-300 p-2 text-xs resize-none h-24" placeholder="Liste as ações que o cliente deve realizar..."></textarea>
+            <div class="actions-section">
+                <div class="bg-black text-white p-2 text-xs font-bold uppercase section-header">AÇÕES CLIENTE:</div>
+                <div class="p-4 border-b-2 border-black compact-section">
+                    <textarea class="w-full border border-gray-300 p-2 text-xs resize-none h-24" placeholder="Liste as ações que o cliente deve realizar..."></textarea>
+                </div>
             </div>
 
             <!-- AÇÕES SUPERGASBRAS -->
-            <div class="bg-black text-white p-2 text-xs font-bold uppercase">AÇÕES SUPERGASBRAS:</div>
-            <div class="p-4 border-b-2 border-black">
-                <textarea class="w-full border border-gray-300 p-2 text-xs resize-none h-24" placeholder="Liste as ações da Supergasbras..."></textarea>
+            <div class="actions-section">
+                <div class="bg-black text-white p-2 text-xs font-bold uppercase section-header">AÇÕES SUPERGASBRAS:</div>
+                <div class="p-4 border-b-2 border-black compact-section">
+                    <textarea class="w-full border border-gray-300 p-2 text-xs resize-none h-24" placeholder="Liste as ações da Supergasbras..."></textarea>
+                </div>
             </div>
 
             <!-- Informações Finais -->
-            <div class="p-4 border-b-2 border-black space-y-2">
+            <div class="p-4 border-b-2 border-black space-y-2 form-section compact-section">
                 <div class="flex items-center gap-4">
                     <span class="text-[10px] font-bold">Assinatura do projetista:</span>
                     <input type="text" class="flex-1 border border-gray-300 p-1 text-xs">
@@ -466,7 +514,7 @@
             </div>
 
             <!-- Assinatura -->
-            <div class="p-4 grid grid-cols-2 gap-8">
+            <div class="p-4 grid grid-cols-2 gap-8 signatures-section">
                 <div class="text-center">
                     <p class="text-[10px] font-bold mb-2">ASSINATURA DO PROJETISTA</p>
                     <div class="relative border-2 border-gray-300 rounded">
