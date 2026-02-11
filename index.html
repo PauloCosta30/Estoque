@@ -12,17 +12,24 @@
             body { background-color: white !important; padding: 0 !important; }
             .form-container { border: 2px solid black !important; box-shadow: none !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; }
             textarea { border: none !important; resize: none !important; }
-            /* Oculta apenas o ícone e texto de placeholder das fotos não carregadas */
-            .aspect-square:has(img.hidden) i,
-            .aspect-square:has(img.hidden) span {
-                display: none !important;
-            }
-            .aspect-square:has(img.hidden) {
-                border-style: solid !important;
-                border-color: #e5e7eb !important;
-            }
+            /* Mantém a numeração das fotos visível no PDF */
+            .foto-numero { display: block !important; }
+            /* Oculta ícone de câmera no PDF */
+            .camera-icon { display: none !important; }
         }
         .aspect-square { aspect-ratio: 1 / 1; }
+        .foto-numero {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+            z-index: 10;
+        }
     </style>
 </head>
 <body class="bg-gray-100 py-8 px-4">
@@ -109,52 +116,60 @@
                     <h3 class="text-xs font-bold mb-4 uppercase">Fotos do Local</h3>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(1)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400"></i>
-                            <span class="text-[10px] text-gray-500">Foto 1</span>
-                            <input type="file" id="file-1" class="hidden" onchange="handleFile(1, event)">
+                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                            <input type="file" id="file-1" class="hidden" accept="image/*" onchange="handleFile(1, event)">
                             <img id="img-1" class="absolute inset-0 w-full h-full object-cover hidden">
+                            <span class="foto-numero">Foto 1</span>
                         </div>
                         <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(2)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400"></i>
-                            <span class="text-[10px] text-gray-500">Foto 2</span>
-                            <input type="file" id="file-2" class="hidden" onchange="handleFile(2, event)">
+                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                            <input type="file" id="file-2" class="hidden" accept="image/*" onchange="handleFile(2, event)">
                             <img id="img-2" class="absolute inset-0 w-full h-full object-cover hidden">
+                            <span class="foto-numero">Foto 2</span>
                         </div>
                         <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(3)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400"></i>
-                            <span class="text-[10px] text-gray-500">Foto 3</span>
-                            <input type="file" id="file-3" class="hidden" onchange="handleFile(3, event)">
+                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                            <input type="file" id="file-3" class="hidden" accept="image/*" onchange="handleFile(3, event)">
                             <img id="img-3" class="absolute inset-0 w-full h-full object-cover hidden">
+                            <span class="foto-numero">Foto 3</span>
                         </div>
                         <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(4)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400"></i>
-                            <span class="text-[10px] text-gray-500">Foto 4</span>
-                            <input type="file" id="file-4" class="hidden" onchange="handleFile(4, event)">
+                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                            <input type="file" id="file-4" class="hidden" accept="image/*" onchange="handleFile(4, event)">
                             <img id="img-4" class="absolute inset-0 w-full h-full object-cover hidden">
+                            <span class="foto-numero">Foto 4</span>
                         </div>
                         <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(5)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400"></i>
-                            <span class="text-[10px] text-gray-500">Foto 5</span>
-                            <input type="file" id="file-5" class="hidden" onchange="handleFile(5, event)">
+                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                            <input type="file" id="file-5" class="hidden" accept="image/*" onchange="handleFile(5, event)">
                             <img id="img-5" class="absolute inset-0 w-full h-full object-cover hidden">
+                            <span class="foto-numero">Foto 5</span>
                         </div>
                         <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(6)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400"></i>
-                            <span class="text-[10px] text-gray-500">Foto 6</span>
-                            <input type="file" id="file-6" class="hidden" onchange="handleFile(6, event)">
+                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                            <input type="file" id="file-6" class="hidden" accept="image/*" onchange="handleFile(6, event)">
                             <img id="img-6" class="absolute inset-0 w-full h-full object-cover hidden">
+                            <span class="foto-numero">Foto 6</span>
                         </div>
                         <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(7)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400"></i>
-                            <span class="text-[10px] text-gray-500">Foto 7</span>
-                            <input type="file" id="file-7" class="hidden" onchange="handleFile(7, event)">
+                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                            <input type="file" id="file-7" class="hidden" accept="image/*" onchange="handleFile(7, event)">
                             <img id="img-7" class="absolute inset-0 w-full h-full object-cover hidden">
+                            <span class="foto-numero">Foto 7</span>
                         </div>
                         <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(8)">
-                            <i data-lucide="camera" class="w-8 h-8 text-gray-400"></i>
-                            <span class="text-[10px] text-gray-500">Foto 8</span>
-                            <input type="file" id="file-8" class="hidden" onchange="handleFile(8, event)">
+                            <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
+                            <span class="text-[10px] text-gray-500 no-print">Clique para adicionar</span>
+                            <input type="file" id="file-8" class="hidden" accept="image/*" onchange="handleFile(8, event)">
                             <img id="img-8" class="absolute inset-0 w-full h-full object-cover hidden">
+                            <span class="foto-numero">Foto 8</span>
                         </div>
                     </div>
                 </div>
