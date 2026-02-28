@@ -40,6 +40,66 @@
         .dados-header { background-color: #d4edda; font-weight: bold; font-size: 11px; padding: 4px 8px; border-bottom: 1px solid #999; }
         .dados-row { font-size: 11px; padding: 3px 8px; border-bottom: 1px solid #ccc; }
         .dados-label { font-weight: bold; font-size: 10px; }
+
+        /* Score Selector */
+        .score-selector { position: relative; display: inline-block; }
+        .score-display {
+            width: 52px; height: 28px;
+            border: 2px solid #9ca3af; border-radius: 4px;
+            background: white; cursor: pointer;
+            font-size: 14px; font-weight: bold; color: #111;
+            display: flex; align-items: center; justify-content: center;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .score-display:hover { border-color: #374151; background: #f9fafb; }
+        .score-display.selected { border-color: #000; background: #f3f4f6; }
+        .score-picker {
+            position: absolute;
+            top: 34px; left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 2px solid #374151;
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            z-index: 999;
+            min-width: 200px;
+        }
+        .score-picker::before {
+            content: '';
+            position: absolute;
+            top: -8px; left: 50%;
+            transform: translateX(-50%);
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #374151;
+        }
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+        }
+        .score-btn {
+            width: 100%; aspect-ratio: 1;
+            border: 1.5px solid #d1d5db;
+            border-radius: 5px;
+            background: #f9fafb;
+            font-size: 12px; font-weight: bold; color: #374151;
+            cursor: pointer;
+            transition: all 0.1s;
+            padding: 4px 0;
+        }
+        .score-btn:hover { background: #1f2937; color: white; border-color: #1f2937; }
+        .score-btn.active { background: #000; color: white; border-color: #000; }
+        .score-btn.low { color: #16a34a; border-color: #bbf7d0; background: #f0fdf4; }
+        .score-btn.mid { color: #d97706; border-color: #fde68a; background: #fffbeb; }
+        .score-btn.high { color: #dc2626; border-color: #fecaca; background: #fef2f2; }
+        .score-btn.low:hover, .score-btn.mid:hover, .score-btn.high:hover { background: #1f2937; color: white; border-color: #1f2937; }
+
+        @media print {
+            .score-picker { display: none !important; }
+            .score-display { border: 1.5px solid #666 !important; }
+        }
     </style>
 </head>
 <body class="bg-gray-100 py-8 px-4">
@@ -112,9 +172,15 @@
                     <div style="padding:4px 8px; font-weight:bold; font-size:11px; flex:1;">DADOS CLIENTE</div>
                     <div style="padding:4px 8px; font-size:11px; font-weight:bold;">S.A.: <input type="text" class="border-b border-gray-400 text-xs p-0.5 ml-1" style="width:120px" value="SA-254374"></div>
                 </div>
-                <div style="padding: 4px 8px; border-bottom:1px solid #ccc;">
-                    <span class="dados-label">RAZÃO SOCIAL: </span>
-                    <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:74%" value="">
+                <div style="padding: 4px 8px; border-bottom:1px solid #ccc; display:flex; gap:16px;">
+                    <div style="flex:1;">
+                        <span class="dados-label">RAZÃO SOCIAL: </span>
+                        <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:70%" value="">
+                    </div>
+                    <div>
+                        <span class="dados-label">CNPJ: </span>
+                        <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:140px" placeholder="00.000.000/0000-00" value="">
+                    </div>
                 </div>
                 <div style="padding: 4px 8px; border-bottom:1px solid #ccc;">
                     <span class="dados-label">ENDEREÇO: </span>
@@ -127,10 +193,6 @@
                     </div>
                     <div>
                         <span class="dados-label">BAIRRO: </span>
-                        <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:100px" value="">
-                    </div>
-                    <div>
-                        <span class="dados-label">CNPJ: </span>
                         <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:100px" value="">
                     </div>
                     <div>
@@ -296,15 +358,53 @@
             <!-- OBS -->
             <div class="obs-section">
                 <div class="bg-black text-white p-2 text-xs font-bold uppercase section-header">OBS:</div>
-                <div class="p-4 border-b-2 border-black space-y-2 compact-section">
-                    <div class="flex items-center gap-2">
+                <div class="p-4 border-b-2 border-black space-y-3 compact-section">
+                    <div class="flex items-center gap-2 flex-wrap">
                         <span class="text-[10px]">➤ Em uma escala de 0 a 10, o nível de DIFICULDADE para equipe LOGÍSTICA é:</span>
-                        <input type="number" min="0" max="10" class="border border-gray-300 p-1 text-xs w-16 text-center">
+                        <div class="score-selector" id="score-logistica">
+                            <button type="button" class="score-display" onclick="toggleScorePicker('logistica')">
+                                <span class="score-value" id="val-logistica">—</span>
+                            </button>
+                            <div class="score-picker hidden" id="picker-logistica">
+                                <div class="score-grid">
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 0)">0</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 1)">1</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 2)">2</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 3)">3</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 4)">4</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 5)">5</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 6)">6</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 7)">7</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 8)">8</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 9)">9</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('logistica', 10)">10</button>
+                                </div>
+                            </div>
+                        </div>
                         <span class="text-[10px]">/10</span>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
                         <span class="text-[10px]">➤ Em uma escala de 0 a 10, o nível de DIFICULDADE para equipe de MONTAGEM é:</span>
-                        <input type="number" min="0" max="10" class="border border-gray-300 p-1 text-xs w-16 text-center">
+                        <div class="score-selector" id="score-montagem">
+                            <button type="button" class="score-display" onclick="toggleScorePicker('montagem')">
+                                <span class="score-value" id="val-montagem">—</span>
+                            </button>
+                            <div class="score-picker hidden" id="picker-montagem">
+                                <div class="score-grid">
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 0)">0</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 1)">1</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 2)">2</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 3)">3</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 4)">4</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 5)">5</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 6)">6</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 7)">7</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 8)">8</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 9)">9</button>
+                                    <button type="button" class="score-btn" onclick="selectScore('montagem', 10)">10</button>
+                                </div>
+                            </div>
+                        </div>
                         <span class="text-[10px]">/10</span>
                     </div>
                 </div>
@@ -432,7 +532,41 @@
         window.addEventListener('load', function() {
             setupSignature('canvas-projetista');
             setupSignature('canvas-cliente');
+            // Color-code score buttons on load
+            document.querySelectorAll('.score-btn').forEach(btn => {
+                const v = parseInt(btn.textContent);
+                if (v <= 3) btn.classList.add('low');
+                else if (v <= 6) btn.classList.add('mid');
+                else btn.classList.add('high');
+            });
         });
+
+        // Close pickers when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.score-selector')) {
+                document.querySelectorAll('.score-picker').forEach(p => p.classList.add('hidden'));
+            }
+        });
+
+        function toggleScorePicker(id) {
+            const picker = document.getElementById('picker-' + id);
+            // Close others
+            document.querySelectorAll('.score-picker').forEach(p => {
+                if (p !== picker) p.classList.add('hidden');
+            });
+            picker.classList.toggle('hidden');
+        }
+
+        function selectScore(id, value) {
+            document.getElementById('val-' + id).textContent = value;
+            document.getElementById('picker-' + id).classList.add('hidden');
+            const display = document.querySelector('#score-' + id + ' .score-display');
+            display.classList.add('selected');
+            // Update active state on buttons
+            document.querySelectorAll('#picker-' + id + ' .score-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.textContent) === value);
+            });
+        }
     </script>
 </body>
 </html>
