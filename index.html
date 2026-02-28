@@ -345,16 +345,13 @@
                 size: A4 portrait;
                 margin: 8mm 8mm 14mm 8mm;
                 @bottom-left {
-                    content: "BR COSTA ENGENHARIA";
-                    font-family: Arial, Helvetica, sans-serif;
-                    font-size: 9px;
-                    color: #6b7280;
+                    content: none;
+                }
+                @bottom-center {
+                    content: none;
                 }
                 @bottom-right {
-                    content: counter(page) " de " counter(pages);
-                    font-family: Arial, Helvetica, sans-serif;
-                    font-size: 9px;
-                    color: #6b7280;
+                    content: none;
                 }
             }
 
@@ -429,6 +426,22 @@
             /* Score display na impressão */
             .score-btn-display { border: 1.5px solid #666 !important; }
         }
+        /* ---------- RODAPÉ DE IMPRESSÃO ---------- */
+        .print-footer {
+            display: none;
+        }
+        @media print {
+            .print-footer {
+                display: block;
+                position: fixed;
+                bottom: 0; left: 0; right: 0;
+                text-align: right;
+                font-size: 9px;
+                color: #6b7280;
+                padding: 3px 8mm;
+                background: white;
+            }
+        }
     </style>
 </head>
 <body>
@@ -469,11 +482,11 @@
             <div class="cab-meta">
                 <div>
                     <div class="lbl">DATA:</div>
-                    <input type="text" class="inp" value="04/02/2026">
+                    <input type="text" class="inp" value="">
                 </div>
                 <div>
                     <div class="lbl">UNIDADE:</div>
-                    <input type="text" class="inp" value="Manuá - SP">
+                    <input type="text" class="inp" value="">
                 </div>
             </div>
         </div>
@@ -494,11 +507,11 @@
             </div>
             <div class="dados-linha">
                 <span class="lbl">NOME:</span>
-                <input type="text" class="inp" value="Bruno Costa">
+                <input type="text" class="inp" value="">
             </div>
             <div class="dados-linha" style="border-bottom:none;">
                 <span class="lbl">CONTATO:</span>
-                <input type="text" class="inp" value="(85) 98480-4173">
+                <input type="text" class="inp" value="">
             </div>
         </div>
 
@@ -601,11 +614,11 @@
         <div class="visita-bloco">
             <div class="sec-header">Formulário de visita do projetista</div>
             <div class="visita-q"><span class="qtxt">Central está pronta de acordo com norma vigente?</span><div class="radio-grp"><label><input type="radio" name="q1"> SIM</label><label><input type="radio" name="q1"> NÃO</label></div></div>
-            <div class="visita-q"><span class="qtxt">Alvenaria da central (pórtico, piso, reboco, telhado)?</span><div class="radio-grp"><label><input type="radio" name="q2"> SIM</label><label><input type="radio" name="q2"> NÃO</label></div></div>
-            <div class="visita-q"><span class="qtxt">Tanque pode ser enviado com PN?</span><div class="radio-grp"><label><input type="radio" name="q3"> SIM</label><label><input type="radio" name="q3"> NÃO</label></div></div>
-            <div class="visita-q"><span class="qtxt">Rede conecta?</span><div class="radio-grp"><label><input type="radio" name="q4"> SIM</label><label><input type="radio" name="q4"> NÃO</label></div></div>
+            <div class="visita-q"><span class="qtxt">Alvenaria da central (portão, piso, reboco, telhado)?</span><div class="radio-grp"><label><input type="radio" name="q2"> SIM</label><label><input type="radio" name="q2"> NÃO</label></div></div>
+            <div class="visita-q"><span class="qtxt">Tanque pode ser enviado com gás?</span><div class="radio-grp"><label><input type="radio" name="q3"> SIM</label><label><input type="radio" name="q3"> NÃO</label></div></div>
+            <div class="visita-q"><span class="qtxt">Rede existente?</span><div class="radio-grp"><label><input type="radio" name="q4"> SIM</label><label><input type="radio" name="q4"> NÃO</label></div></div>
             <div class="visita-q"><span class="qtxt">Ponto de consumo precisa alterar quantidade?</span><div class="radio-grp"><label><input type="radio" name="q5"> SIM</label><label><input type="radio" name="q5"> NÃO</label></div></div>
-            <div class="visita-q"><span class="qtxt">Cambota Supergasbras plantão em fachada?</span><div class="radio-grp"><label><input type="radio" name="q6"> SIM</label><label><input type="radio" name="q6"> NÃO</label></div></div>
+            <div class="visita-q"><span class="qtxt">Caminhão Supergasbras abastece com facilidade?</span><div class="radio-grp"><label><input type="radio" name="q6"> SIM</label><label><input type="radio" name="q6"> NÃO</label></div></div>
             <div class="visita-q" style="border-bottom:none;"><span class="qtxt">Central já possui extintor válido e pressurizado?</span><div class="radio-grp"><label><input type="radio" name="q7"> SIM</label><label><input type="radio" name="q7"> NÃO</label></div></div>
             <div class="visita-extra">
                 <div class="row">
@@ -640,16 +653,11 @@
                         <tr><td>Bitola e metragem de rede:</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
                         <tr><td>Quantidade de pontos:</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
                         <tr><td>Quantidade e tipo de abrigo:</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-                        <tr><td>m² da parede resistente afofo:</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-                        <tr><td>Portas m²:</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                        <tr><td>m² de parede resistente ao fogo:</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                        <tr><td>Portão m²:</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
                         <tr><td>Laje m²:</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="quant-obs">
-                <span class="lbl">Cliente QUER EXECUTAR A GASOMEDROS LTDA:</span>
-                <textarea placeholder="Digite o que o cliente quer executar..."></textarea>
-            </div>
         </div>
 
         <!-- OBS SCORE -->
@@ -686,7 +694,7 @@
         <!-- INFORMAÇÕES FINAIS -->
         <div class="finais-bloco">
             <div class="row">
-                <span class="lbl">Assinatura do projetista (Sim / Não):</span>
+                <span class="lbl">Técnico projetista:</span>
                 <input type="text" class="inp">
             </div>
             <div class="row">
@@ -695,7 +703,7 @@
                 <label style="font-size:11px;display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="cpq"> Não</label>
             </div>
             <div class="row">
-                <span class="lbl">Documento de identificação do cliente:</span>
+                <span class="lbl">Cliente: Nome e Doc. de identificação:</span>
                 <input type="text" class="inp">
             </div>
         </div>
@@ -823,6 +831,19 @@ window.addEventListener('load',()=>{
     buildPicker('logistica');
     buildPicker('montagem');
 });
+</script>
+<!-- RODAPÉ IMPRESSÃO -->
+<div class="print-footer" id="print-footer"></div>
+
+<script>
+// Preenche data e hora no rodapé
+(function(){
+    const now = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const data = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
+    const hora = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    document.getElementById('print-footer').textContent = `${data}  ${hora}`;
+})();
 </script>
 </body>
 </html>
