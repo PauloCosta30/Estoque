@@ -8,161 +8,38 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @media print {
-            @page {
-                size: A4;
-                margin: 10mm;
-            }
-            
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                color-adjust: exact !important;
-            }
-            
+            @page { size: A4; margin: 10mm; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
             .no-print { display: none !important; }
-            
-            body { 
-                background-color: white !important; 
-                padding: 0 !important; 
-                margin: 0 !important;
-                width: 100% !important;
-            }
-            
-            .form-container { 
-                border: 2px solid black !important; 
-                box-shadow: none !important; 
-                width: 100% !important; 
-                max-width: 100% !important; 
-                margin: 0 !important;
-            }
-            
-            /* Previne quebra de página dentro de seções críticas */
-            .section-header,
-            .header-row,
-            .client-data,
-            .checkbox-section,
-            .form-section {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-            
-            /* Grid de fotos - permite quebra entre linhas mas não dentro delas */
-            .photo-grid {
-                page-break-inside: auto !important;
-            }
-            
-            .photo-row {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                display: flex !important;
-                margin-bottom: 0.5rem !important;
-            }
-            
-            /* Observações - fica junto com as fotos se possível */
-            .observations-section {
-                page-break-before: avoid !important;
-            }
-            
-            /* Seções de formulário */
-            .visit-form,
-            .quantity-table,
-            .obs-section,
-            .actions-section {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-            
-            /* Tabela - mantém cabeçalho em cada página */
-            table {
-                page-break-inside: auto !important;
-            }
-            
-            thead {
-                display: table-header-group !important;
-            }
-            
-            tr {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-            
-            /* Assinaturas sempre juntas */
-            .signatures-section {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-            
-            textarea { 
-                border: 1px solid #ccc !important; 
-                resize: none !important;
-                overflow: hidden !important;
-                page-break-inside: avoid !important;
-            }
-            
-            .foto-numero { 
-                display: block !important; 
-                background-color: rgba(0, 0, 0, 0.8) !important;
-            }
-            
+            body { background-color: white !important; padding: 0 !important; margin: 0 !important; width: 100% !important; }
+            .form-container { border: 2px solid black !important; box-shadow: none !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; }
+            .section-header, .header-row, .client-data, .checkbox-section, .form-section { page-break-inside: avoid !important; break-inside: avoid !important; }
+            .photo-grid { page-break-inside: auto !important; }
+            .photo-row { page-break-inside: avoid !important; break-inside: avoid !important; display: flex !important; margin-bottom: 0.5rem !important; }
+            .observations-section { page-break-before: avoid !important; }
+            .visit-form, .quantity-table, .obs-section, .actions-section { page-break-inside: avoid !important; break-inside: avoid !important; }
+            table { page-break-inside: auto !important; }
+            thead { display: table-header-group !important; }
+            tr { page-break-inside: avoid !important; break-inside: avoid !important; }
+            .signatures-section { page-break-inside: avoid !important; break-inside: avoid !important; }
+            textarea { border: 1px solid #ccc !important; resize: none !important; overflow: hidden !important; page-break-inside: avoid !important; }
+            .foto-numero { display: block !important; background-color: rgba(0, 0, 0, 0.8) !important; }
             .camera-icon { display: none !important; }
-            
-            .aspect-square {
-                height: auto !important;
-                min-height: 120px !important;
-                max-height: 150px !important;
-            }
-            
-            .bg-black {
-                background-color: #000000 !important;
-                -webkit-print-color-adjust: exact !important;
-            }
-            
-            .bg-gray-50 {
-                background-color: #f9fafb !important;
-                -webkit-print-color-adjust: exact !important;
-            }
-            
-            .bg-gray-100 {
-                background-color: #f3f4f6 !important;
-                -webkit-print-color-adjust: exact !important;
-            }
-            
-            .border-black {
-                border-color: #000000 !important;
-            }
-            
-            .border-2 {
-                border-width: 2px !important;
-            }
-            
-            canvas {
-                page-break-inside: avoid !important;
-                border: 2px solid #d1d5db !important;
-            }
-            
-            /* Força margens menores em seções específicas */
-            .compact-section {
-                margin-top: 0 !important;
-                margin-bottom: 0 !important;
-                padding-top: 0.5rem !important;
-                padding-bottom: 0.5rem !important;
-            }
+            .aspect-square { height: auto !important; min-height: 120px !important; max-height: 150px !important; }
+            .bg-black { background-color: #000000 !important; -webkit-print-color-adjust: exact !important; }
+            .bg-gray-50 { background-color: #f9fafb !important; -webkit-print-color-adjust: exact !important; }
+            .bg-gray-100 { background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact !important; }
+            .border-black { border-color: #000000 !important; }
+            .border-2 { border-width: 2px !important; }
+            canvas { page-break-inside: avoid !important; border: 2px solid #d1d5db !important; }
+            .compact-section { margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+            .dados-section { page-break-inside: avoid !important; break-inside: avoid !important; }
         }
-        
         .aspect-square { aspect-ratio: 1 / 1; }
-        
-        .foto-numero {
-            position: absolute;
-            bottom: 4px;
-            left: 4px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 10px;
-            font-weight: bold;
-            z-index: 10;
-        }
+        .foto-numero { position: absolute; bottom: 4px; left: 4px; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: bold; z-index: 10; }
+        .dados-header { background-color: #d4edda; font-weight: bold; font-size: 11px; padding: 4px 8px; border-bottom: 1px solid #999; }
+        .dados-row { font-size: 11px; padding: 3px 8px; border-bottom: 1px solid #ccc; }
+        .dados-label { font-weight: bold; font-size: 10px; }
     </style>
 </head>
 <body class="bg-gray-100 py-8 px-4">
@@ -181,12 +58,11 @@
         <div id="form-content" class="bg-white border-2 border-black shadow-xl form-container">
             <!-- Cabeçalho -->
             <div class="grid grid-cols-3 border-b-2 border-black header-row">
-                <div class="p-4 border-r-2 border-black flex flex-col items-center justify-center bg-gray-50">
-                    <div class="text-4xl font-bold text-red-600">⊙</div>
-                    <div class="font-bold text-sm">SUPERGASBRAS</div>
+                <div class="p-4 border-r-2 border-black flex flex-col items-center justify-center bg-white">
+                    <img src="data:image/jpeg;base64,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" alt="Supergasbras" style="max-width: 160px; max-height: 80px; object-fit: contain;">
                 </div>
                 <div class="p-4 border-r-2 border-black flex items-center justify-center text-center">
-                    <h2 class="font-bold text-lg uppercase">Registro de Projeto<br>Levantamento Técnico</h2>
+                    <h2 class="font-bold text-base uppercase">Registro de Projeto<br>Levantamento Técnico</h2>
                 </div>
                 <div class="p-4 bg-gray-50 flex flex-col gap-2">
                     <div>
@@ -213,32 +89,49 @@
                 </label>
             </div>
 
-            <!-- Dados do Cliente -->
-            <div class="p-4 border-b-2 border-black grid grid-cols-2 gap-4 client-data">
-                <div class="space-y-2">
-                    <div>
-                        <label class="text-[10px] font-bold block">RAZÃO SOCIAL:</label>
-                        <input type="text" class="w-full border border-gray-300 p-1 text-sm" value="BR COSTA ENGENHARIA">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold block">NOME:</label>
-                        <input type="text" class="w-full border border-gray-300 p-1 text-sm" value="Bruno Costa">
-                    </div>
+            <!-- DADOS DO PROJETISTA -->
+            <div class="border-b-2 border-black dados-section">
+                <div class="dados-header" style="background-color:#d4edda; font-size:11px; padding:4px 8px; font-weight:bold; border-bottom:1px solid #999;">DADOS DO PROJETISTA</div>
+                <div style="padding: 4px 8px; border-bottom:1px solid #ccc;">
+                    <span class="dados-label">RAZÃO SOCIAL: </span>
+                    <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:75%" value="BR COSTA ENGENHARIA – BRUNO RAFAEL DE OLIVEIRA COSTA LTDA">
                 </div>
-                <div class="space-y-2">
+                <div style="padding: 4px 8px; border-bottom:1px solid #ccc;">
+                    <span class="dados-label">NOME: </span>
+                    <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:80%" value="Bruno Costa">
+                </div>
+                <div style="padding: 4px 8px;">
+                    <span class="dados-label">CONTATO: </span>
+                    <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:78%" value="(85) 98480-4173">
+                </div>
+            </div>
+
+            <!-- DADOS DO CLIENTE -->
+            <div class="border-b-2 border-black dados-section">
+                <div class="flex border-b" style="border-bottom:1px solid #ccc;">
+                    <div style="padding:4px 8px; font-weight:bold; font-size:11px; flex:1;">DADOS CLIENTE</div>
+                    <div style="padding:4px 8px; font-size:11px; font-weight:bold;">S.A.: <input type="text" class="border-b border-gray-400 text-xs p-0.5 ml-1" style="width:120px" value="SA-254374"></div>
+                </div>
+                <div style="padding: 4px 8px; border-bottom:1px solid #ccc;">
+                    <span class="dados-label">RAZÃO SOCIAL: </span>
+                    <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:74%" value="">
+                </div>
+                <div style="padding: 4px 8px; border-bottom:1px solid #ccc;">
+                    <span class="dados-label">ENDEREÇO: </span>
+                    <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:76%" value="">
+                </div>
+                <div style="padding: 4px 8px; display:flex; gap:16px;">
                     <div>
-                        <label class="text-[10px] font-bold block">CONTATO:</label>
-                        <input type="text" class="w-full border border-gray-300 p-1 text-sm" value="(11) 92144-4173">
+                        <span class="dados-label">CIDADE: </span>
+                        <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:120px" value="">
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="text-[10px] font-bold block">S.A:</label>
-                            <input type="text" class="w-full border border-gray-300 p-1 text-sm" value="261628">
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold block">ART:</label>
-                            <input type="text" class="w-full border border-gray-300 p-1 text-sm" value="2620260234523">
-                        </div>
+                    <div>
+                        <span class="dados-label">BAIRRO: </span>
+                        <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:100px" value="">
+                    </div>
+                    <div>
+                        <span class="dados-label">CEP: </span>
+                        <input type="text" class="border-b border-gray-400 text-xs p-0.5" style="width:90px" value="">
                     </div>
                 </div>
             </div>
@@ -248,7 +141,6 @@
                 <div class="col-span-2 p-4 border-r-2 border-black">
                     <h3 class="text-xs font-bold mb-4 uppercase">Fotos do Local</h3>
                     <div class="photo-grid">
-                        <!-- Linha 1 -->
                         <div class="photo-row grid grid-cols-2 gap-4 mb-4">
                             <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(1)">
                                 <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
@@ -265,7 +157,6 @@
                                 <span class="foto-numero">Foto 2</span>
                             </div>
                         </div>
-                        <!-- Linha 2 -->
                         <div class="photo-row grid grid-cols-2 gap-4 mb-4">
                             <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(3)">
                                 <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
@@ -282,7 +173,6 @@
                                 <span class="foto-numero">Foto 4</span>
                             </div>
                         </div>
-                        <!-- Linha 3 -->
                         <div class="photo-row grid grid-cols-2 gap-4 mb-4">
                             <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(5)">
                                 <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
@@ -299,7 +189,6 @@
                                 <span class="foto-numero">Foto 6</span>
                             </div>
                         </div>
-                        <!-- Linha 4 -->
                         <div class="photo-row grid grid-cols-2 gap-4">
                             <div class="aspect-square border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden" onclick="triggerUpload(7)">
                                 <i data-lucide="camera" class="w-8 h-8 text-gray-400 camera-icon"></i>
@@ -330,52 +219,31 @@
                 <div class="p-4 border-b-2 border-black space-y-2 compact-section">
                     <div class="flex justify-between items-center border-b border-gray-200 pb-1">
                         <span class="text-[10px] font-bold">Central está pronta de acordo com norma vigente?</span>
-                        <div class="flex gap-4">
-                            <label class="text-[10px]"><input type="radio" name="q1" checked> SIM</label>
-                            <label class="text-[10px]"><input type="radio" name="q1"> NÃO</label>
-                        </div>
+                        <div class="flex gap-4"><label class="text-[10px]"><input type="radio" name="q1" checked> SIM</label><label class="text-[10px]"><input type="radio" name="q1"> NÃO</label></div>
                     </div>
                     <div class="flex justify-between items-center border-b border-gray-200 pb-1">
                         <span class="text-[10px] font-bold">Alvenaria da central (pórtico, piso, reboco, telhado)?</span>
-                        <div class="flex gap-4">
-                            <label class="text-[10px]"><input type="radio" name="q2" checked> SIM</label>
-                            <label class="text-[10px]"><input type="radio" name="q2"> NÃO</label>
-                        </div>
+                        <div class="flex gap-4"><label class="text-[10px]"><input type="radio" name="q2" checked> SIM</label><label class="text-[10px]"><input type="radio" name="q2"> NÃO</label></div>
                     </div>
                     <div class="flex justify-between items-center border-b border-gray-200 pb-1">
                         <span class="text-[10px] font-bold">Tanque pode ser enviado com PN?</span>
-                        <div class="flex gap-4">
-                            <label class="text-[10px]"><input type="radio" name="q3" checked> SIM</label>
-                            <label class="text-[10px]"><input type="radio" name="q3"> NÃO</label>
-                        </div>
+                        <div class="flex gap-4"><label class="text-[10px]"><input type="radio" name="q3" checked> SIM</label><label class="text-[10px]"><input type="radio" name="q3"> NÃO</label></div>
                     </div>
                     <div class="flex justify-between items-center border-b border-gray-200 pb-1">
                         <span class="text-[10px] font-bold">Rede conecta?</span>
-                        <div class="flex gap-4">
-                            <label class="text-[10px]"><input type="radio" name="q4"> SIM</label>
-                            <label class="text-[10px]"><input type="radio" name="q4"> NÃO</label>
-                        </div>
+                        <div class="flex gap-4"><label class="text-[10px]"><input type="radio" name="q4"> SIM</label><label class="text-[10px]"><input type="radio" name="q4"> NÃO</label></div>
                     </div>
                     <div class="flex justify-between items-center border-b border-gray-200 pb-1">
                         <span class="text-[10px] font-bold">Ponto de consumo precisa alterar quantidade?</span>
-                        <div class="flex gap-4">
-                            <label class="text-[10px]"><input type="radio" name="q5"> SIM</label>
-                            <label class="text-[10px]"><input type="radio" name="q5"> NÃO</label>
-                        </div>
+                        <div class="flex gap-4"><label class="text-[10px]"><input type="radio" name="q5"> SIM</label><label class="text-[10px]"><input type="radio" name="q5"> NÃO</label></div>
                     </div>
                     <div class="flex justify-between items-center border-b border-gray-200 pb-1">
                         <span class="text-[10px] font-bold">Cambota Supergasbras plantão em fachadada?</span>
-                        <div class="flex gap-4">
-                            <label class="text-[10px]"><input type="radio" name="q6"> SIM</label>
-                            <label class="text-[10px]"><input type="radio" name="q6"> NÃO</label>
-                        </div>
+                        <div class="flex gap-4"><label class="text-[10px]"><input type="radio" name="q6"> SIM</label><label class="text-[10px]"><input type="radio" name="q6"> NÃO</label></div>
                     </div>
                     <div class="flex justify-between items-center border-b border-gray-200 pb-1">
                         <span class="text-[10px] font-bold">Central já possui extintor válido e pressurizado?</span>
-                        <div class="flex gap-4">
-                            <label class="text-[10px]"><input type="radio" name="q7"> SIM</label>
-                            <label class="text-[10px]"><input type="radio" name="q7"> NÃO</label>
-                        </div>
+                        <div class="flex gap-4"><label class="text-[10px]"><input type="radio" name="q7"> SIM</label><label class="text-[10px]"><input type="radio" name="q7"> NÃO</label></div>
                     </div>
                     <div class="flex items-center gap-4 pt-2">
                         <span class="text-[10px] font-bold">Sinal de celular:</span>
@@ -405,55 +273,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="border border-gray-300 p-2 text-[10px]">Quantidade e capacidade dos tanques</td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 p-2 text-[10px]">Bitola e metragem de rede:</td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 p-2 text-[10px]">Quantidade de pontos:</td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 p-2 text-[10px]">Quantidade e tipo de abrigo:</td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 p-2 text-[10px]">m² da parede resistente afofo:</td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 p-2 text-[10px]">Portas m²:</td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 p-2 text-[10px]">Laje m²:</td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                                <td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td>
-                            </tr>
+                            <tr><td class="border border-gray-300 p-2 text-[10px]">Quantidade e capacidade dos tanques</td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td></tr>
+                            <tr><td class="border border-gray-300 p-2 text-[10px]">Bitola e metragem de rede:</td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td></tr>
+                            <tr><td class="border border-gray-300 p-2 text-[10px]">Quantidade de pontos:</td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td></tr>
+                            <tr><td class="border border-gray-300 p-2 text-[10px]">Quantidade e tipo de abrigo:</td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td></tr>
+                            <tr><td class="border border-gray-300 p-2 text-[10px]">m² da parede resistente afofo:</td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td></tr>
+                            <tr><td class="border border-gray-300 p-2 text-[10px]">Portas m²:</td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td></tr>
+                            <tr><td class="border border-gray-300 p-2 text-[10px]">Laje m²:</td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td><td class="border border-gray-300 p-1"><input type="text" class="w-full text-xs p-1"></td></tr>
                         </tbody>
                     </table>
                     <div class="mt-4">
@@ -538,7 +364,6 @@
     </div>
 
     <script>
-        // Inicializa os ícones do Lucide
         lucide.createIcons();
 
         function triggerUpload(id) {
@@ -558,7 +383,6 @@
             }
         }
 
-        // Configuração da assinatura digital
         function setupSignature(canvasId) {
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d');
@@ -566,7 +390,6 @@
             let lastX = 0;
             let lastY = 0;
 
-            // Configuração do contexto
             ctx.strokeStyle = '#000';
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
@@ -576,54 +399,21 @@
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
                 const scaleY = canvas.height / rect.height;
-
                 if (e.touches) {
-                    return {
-                        x: (e.touches[0].clientX - rect.left) * scaleX,
-                        y: (e.touches[0].clientY - rect.top) * scaleY
-                    };
+                    return { x: (e.touches[0].clientX - rect.left) * scaleX, y: (e.touches[0].clientY - rect.top) * scaleY };
                 } else {
-                    return {
-                        x: (e.clientX - rect.left) * scaleX,
-                        y: (e.clientY - rect.top) * scaleY
-                    };
+                    return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
                 }
             }
 
-            function startDrawing(e) {
-                e.preventDefault();
-                isDrawing = true;
-                const coords = getCoordinates(e);
-                lastX = coords.x;
-                lastY = coords.y;
-            }
+            function startDrawing(e) { e.preventDefault(); isDrawing = true; const coords = getCoordinates(e); lastX = coords.x; lastY = coords.y; }
+            function draw(e) { e.preventDefault(); if (!isDrawing) return; const coords = getCoordinates(e); ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(coords.x, coords.y); ctx.stroke(); lastX = coords.x; lastY = coords.y; }
+            function stopDrawing(e) { e.preventDefault(); isDrawing = false; }
 
-            function draw(e) {
-                e.preventDefault();
-                if (!isDrawing) return;
-
-                const coords = getCoordinates(e);
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
-                ctx.lineTo(coords.x, coords.y);
-                ctx.stroke();
-
-                lastX = coords.x;
-                lastY = coords.y;
-            }
-
-            function stopDrawing(e) {
-                e.preventDefault();
-                isDrawing = false;
-            }
-
-            // Mouse events
             canvas.addEventListener('mousedown', startDrawing);
             canvas.addEventListener('mousemove', draw);
             canvas.addEventListener('mouseup', stopDrawing);
             canvas.addEventListener('mouseout', stopDrawing);
-
-            // Touch events
             canvas.addEventListener('touchstart', startDrawing);
             canvas.addEventListener('touchmove', draw);
             canvas.addEventListener('touchend', stopDrawing);
@@ -635,7 +425,6 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
-        // Inicializar assinaturas quando a página carregar
         window.addEventListener('load', function() {
             setupSignature('canvas-projetista');
             setupSignature('canvas-cliente');
