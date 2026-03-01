@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso — BR Costa Engenharia</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            min-height: 100vh; font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+            display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .card {
+            background: white; border-radius: 12px; padding: 40px 36px;
+            width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .logo-area { text-align: center; margin-bottom: 28px; }
+        .logo-area .empresa { font-size: 13px; font-weight: bold; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .logo-area h1 { font-size: 20px; font-weight: bold; color: #1e3a5f; }
+        .logo-area p { font-size: 12px; color: #9ca3af; margin-top: 4px; }
+        .divider { height: 2px; background: linear-gradient(90deg, #2563eb, #1e3a5f); border-radius: 2px; margin-bottom: 28px; }
+        .tela { display: none; }
+        .tela.ativa { display: block; }
+        .field { margin-bottom: 16px; }
+        .field label { display: block; font-size: 11px; font-weight: bold; color: #374151; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .field input { width: 100%; border: 1.5px solid #d1d5db; border-radius: 6px; padding: 10px 12px; font-size: 14px; color: #111; transition: border-color 0.15s; }
+        .field input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        .btn-primary { width: 100%; background: #2563eb; color: white; border: none; border-radius: 6px; padding: 12px; font-size: 14px; font-weight: bold; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-primary:disabled { background: #93c5fd; cursor: not-allowed; }
+        .btn-link { background: none; border: none; color: #2563eb; font-size: 12px; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block; width: 100%; text-align: center; }
+        .btn-link:hover { color: #1d4ed8; }
+        .msg { border-radius: 6px; padding: 10px 12px; font-size: 12px; margin-top: 12px; text-align: center; display: none; line-height: 1.5; }
+        .msg.show { display: block; }
+        .msg.erro { background:#fef2f2; border:1px solid #fca5a5; color:#dc2626; }
+        .msg.ok   { background:#f0fdf4; border:1px solid #86efac; color:#16a34a; }
+        .loading { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 6px; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .footer-txt { text-align: center; font-size: 11px; color: #9ca3af; margin-top: 24px; }
+        .badge { border-radius: 6px; padding: 10px 12px; font-size: 12px; margin-bottom: 16px; text-align: center; line-height: 1.5; }
+        .badge.verde { background:#f0fdf4; border:1px solid #86efac; color:#15803d; }
+        .badge.azul  { background:#eff6ff; border:1px solid #93c5fd; color:#1e40af; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="logo-area">
+        <div class="empresa">BR Costa Engenharia</div>
+        <h1>Levantamento Técnico</h1>
+        <p id="subtitulo">Acesso restrito — faça login para continuar</p>
+    </div>
+    <div class="divider"></div>
+
+    <!-- ① LOGIN NORMAL -->
+    <div id="tela-login" class="tela ativa">
+        <div class="field"><label>E-mail</label><input type="email" id="email" placeholder="seu@email.com" autocomplete="email"></div>
+        <div class="field"><label>Senha</label><input type="password" id="senha" placeholder="••••••••" autocomplete="current-password"></div>
+        <button class="btn-primary" id="btn-entrar" onclick="fazerLogin()">Entrar</button>
+        <button class="btn-link" onclick="ir('tela-recuperacao')">Esqueci minha senha</button>
+        <div class="msg erro" id="erro-login"></div>
+    </div>
+
+    <!-- ② CRIAR SENHA — convite -->
+    <div id="tela-convite" class="tela">
+        <div class="badge verde">✉️ Você foi convidado!<br>Crie sua senha para acessar o formulário.</div>
+        <div class="field"><label>Nova senha</label><input type="password" id="senha-nova" placeholder="Mínimo 8 caracteres"></div>
+        <div class="field"><label>Confirmar senha</label><input type="password" id="senha-confirma" placeholder="Repita a senha"></div>
+        <button class="btn-primary" id="btn-criar" onclick="criarSenha()">Criar senha e entrar</button>
+        <div class="msg erro" id="erro-convite"></div>
+        <div class="msg ok"   id="ok-convite"></div>
+    </div>
+
+    <!-- ③ REDEFINIR SENHA — recovery -->
+    <div id="tela-redefine" class="tela">
+        <div class="badge azul">🔑 Redefina sua senha<br>Digite uma nova senha para acessar.</div>
+        <div class="field"><label>Nova senha</label><input type="password" id="senha-redef" placeholder="Mínimo 8 caracteres"></div>
+        <div class="field"><label>Confirmar senha</label><input type="password" id="senha-redef-confirma" placeholder="Repita a senha"></div>
+        <button class="btn-primary" id="btn-redef" onclick="redefinirSenha()">Salvar nova senha</button>
+        <div class="msg erro" id="erro-redef"></div>
+        <div class="msg ok"   id="ok-redef"></div>
+    </div>
+
+    <!-- ④ ESQUECI MINHA SENHA -->
+    <div id="tela-recuperacao" class="tela">
+        <p style="font-size:12px;color:#374151;margin-bottom:14px;line-height:1.5;">Digite seu e-mail e enviaremos um link para redefinir sua senha.</p>
+        <div class="field"><label>E-mail</label><input type="email" id="email-rec" placeholder="seu@email.com"></div>
+        <button class="btn-primary" onclick="enviarRecuperacao()">Enviar link</button>
+        <button class="btn-link" onclick="ir('tela-login')">← Voltar ao login</button>
+        <div class="msg erro" id="erro-rec"></div>
+        <div class="msg ok"   id="ok-rec"></div>
+    </div>
+
+    <div class="footer-txt">
+        Acesso somente para usuários autorizados.<br>
+        Fale com o administrador para solicitar acesso.
+    </div>
+</div>
+
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+/* ── utilitários ── */
+function ir(tela) {
+    document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+    document.getElementById(tela).classList.add('ativa');
+}
+function setBtn(id, txt, loading) {
+    const b = document.getElementById(id);
+    b.disabled = loading;
+    b.innerHTML = loading ? '<span class="loading"></span>' + txt : txt;
+}
+function mostrarMsg(id, txt) {
+    const el = document.getElementById(id);
+    el.textContent = txt; el.classList.add('show');
+}
+function limpar(...ids) {
+    ids.forEach(id => { const el = document.getElementById(id); if(el){ el.textContent=''; el.classList.remove('show'); } });
+}
+function getToken(tipo) {
+    const m = window.location.hash.match(new RegExp(tipo + '=([^&]+)'));
+    return m ? m[1] : null;
+}
+
+/* ── init: detecta tipo de acesso ── */
+netlifyIdentity.on('init', user => {
+    const invite   = getToken('invite_token');
+    const recovery = getToken('recovery_token');
+
+    if (invite) {
+        document.getElementById('subtitulo').textContent = 'Crie sua senha de acesso';
+        ir('tela-convite');
+    } else if (recovery) {
+        document.getElementById('subtitulo').textContent = 'Redefina sua senha';
+        ir('tela-redefine');
+    } else if (user) {
+        window.location.href = '/index.html';
+    }
+});
+
+netlifyIdentity.on('login', () => { window.location.href = '/index.html'; });
+
+/* ── login normal ── */
+function fazerLogin() {
+    const email = document.getElementById('email').value.trim();
+    const senha = document.getElementById('senha').value;
+    limpar('erro-login');
+    if (!email || !senha) { mostrarMsg('erro-login', 'Preencha e-mail e senha.'); return; }
+    setBtn('btn-entrar', 'Entrando...', true);
+    netlifyIdentity.login(email, senha, true)
+        .catch(() => {
+            mostrarMsg('erro-login', 'E-mail ou senha incorretos. Tente novamente.');
+            setBtn('btn-entrar', 'Entrar', false);
+        });
+}
+
+/* ── criar senha (convite) ── */
+function criarSenha() {
+    const nova = document.getElementById('senha-nova').value;
+    const conf = document.getElementById('senha-confirma').value;
+    limpar('erro-convite','ok-convite');
+    if (nova.length < 8) { mostrarMsg('erro-convite','A senha deve ter no mínimo 8 caracteres.'); return; }
+    if (nova !== conf)   { mostrarMsg('erro-convite','As senhas não coincidem.'); return; }
+    setBtn('btn-criar','Criando...', true);
+    netlifyIdentity.acceptInvite(getToken('invite_token'), nova, true)
+        .then(() => mostrarMsg('ok-convite','✅ Senha criada! Entrando...'))
+        .catch(() => {
+            mostrarMsg('erro-convite','Erro ao criar senha. O link pode ter expirado. Peça um novo convite.');
+            setBtn('btn-criar','Criar senha e entrar', false);
+        });
+}
+
+/* ── redefinir senha (recovery) ── */
+function redefinirSenha() {
+    const nova = document.getElementById('senha-redef').value;
+    const conf = document.getElementById('senha-redef-confirma').value;
+    limpar('erro-redef','ok-redef');
+    if (nova.length < 8) { mostrarMsg('erro-redef','A senha deve ter no mínimo 8 caracteres.'); return; }
+    if (nova !== conf)   { mostrarMsg('erro-redef','As senhas não coincidem.'); return; }
+    setBtn('btn-redef','Salvando...', true);
+    netlifyIdentity.recover(getToken('recovery_token'))
+        .then(user => user.update({ password: nova }))
+        .then(() => {
+            mostrarMsg('ok-redef','✅ Senha redefinida! Entrando...');
+            setTimeout(() => window.location.href = '/index.html', 1500);
+        })
+        .catch(() => {
+            mostrarMsg('erro-redef','Erro ao redefinir. O link pode ter expirado.');
+            setBtn('btn-redef','Salvar nova senha', false);
+        });
+}
+
+/* ── enviar recuperação ── */
+function enviarRecuperacao() {
+    const email = document.getElementById('email-rec').value.trim();
+    limpar('erro-rec','ok-rec');
+    if (!email) { mostrarMsg('erro-rec','Digite seu e-mail.'); return; }
+    netlifyIdentity.requestPasswordRecovery(email)
+        .then(() => mostrarMsg('ok-rec','Link enviado! Verifique seu e-mail.'))
+        .catch(() => mostrarMsg('erro-rec','E-mail não encontrado.'));
+}
+
+/* ── enter para logar ── */
+document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.querySelector('.tela.ativa').id === 'tela-login') fazerLogin();
+});
+</script>
+</body>
+</html>
