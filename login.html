@@ -25,107 +25,52 @@ html, body {
     width: 100%;
     max-width: 400px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
 }
 
-.logo-area { text-align: center; margin-bottom: 28px; }
-.logo-area .empresa {
+.empresa {
     font-size: 13px;
     font-weight: bold;
     color: #6b7280;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-.logo-area h1 {
+
+h1 {
     font-size: 20px;
     font-weight: bold;
     color: #1e3a5f;
+    margin: 6px 0 4px;
 }
-.logo-area p {
+
+.subtitulo {
     font-size: 12px;
     color: #9ca3af;
-    margin-top: 4px;
+    margin-bottom: 28px;
 }
 
 .divider {
     height: 2px;
     background: linear-gradient(90deg, #2563eb, #1e3a5f);
     border-radius: 2px;
-    margin: 20px 0;
+    margin-bottom: 28px;
 }
 
-.field { margin-bottom: 16px; }
-.field label {
-    display: block;
-    font-size: 11px;
-    font-weight: bold;
-    color: #374151;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-}
-.field input {
-    width: 100%;
-    border: 1.5px solid #d1d5db;
-    border-radius: 6px;
-    padding: 10px 12px;
-    font-size: 14px;
-}
-.field input:focus {
-    outline: none;
-    border-color: #2563eb;
-}
-
-.btn-login {
+#btn-abrir-login {
     width: 100%;
     background: #2563eb;
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 12px;
-    font-size: 14px;
+    padding: 13px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
+    transition: background 0.2s;
 }
-.btn-login:hover { background: #1d4ed8; }
-.btn-login:disabled { background: #93c5fd; }
-
-.link-btn {
-    background: none;
-    border: none;
-    color: #2563eb;
-    font-size: 12px;
-    cursor: pointer;
-    text-decoration: underline;
-    margin-top: 10px;
-    display: block;
-    width: 100%;
-    text-align: center;
-}
-
-.msg {
-    display: none;
-    border-radius: 6px;
-    padding: 10px;
-    font-size: 12px;
-    margin-top: 12px;
-    text-align: center;
-}
-
-.msg.erro {
-    background: #fef2f2;
-    border: 1px solid #fca5a5;
-    color: #dc2626;
-}
-
-.msg.sucesso {
-    background: #f0fdf4;
-    border: 1px solid #86efac;
-    color: #16a34a;
-}
-
-.msg.show { display: block; }
+#btn-abrir-login:hover { background: #1d4ed8; }
 
 .footer {
-    text-align: center;
     font-size: 11px;
     color: #9ca3af;
     margin-top: 20px;
@@ -136,129 +81,46 @@ html, body {
 <body>
 
 <div class="card">
-
-  <div class="logo-area">
     <div class="empresa">BR Costa Engenharia</div>
     <h1>Levantamento Técnico</h1>
-    <p>Acesso restrito</p>
-  </div>
+    <p class="subtitulo">Acesso restrito</p>
 
-  <div class="divider"></div>
+    <div class="divider"></div>
 
-  <div id="login-box">
-    <div class="field">
-      <label>E-mail</label>
-      <input type="email" id="email">
-    </div>
+    <button id="btn-abrir-login" onclick="netlifyIdentity.open()">
+        Entrar / Criar senha
+    </button>
 
-    <div class="field">
-      <label>Senha</label>
-      <input type="password" id="senha">
-    </div>
-
-    <button class="btn-login" onclick="fazerLogin()" id="btn">Entrar</button>
-    <button class="link-btn" onclick="mostrarRec()">Esqueci minha senha</button>
-
-    <div id="msg-login" class="msg erro"></div>
-  </div>
-
-  <div id="rec-box" style="display:none;">
-    <div class="field">
-      <label>E-mail</label>
-      <input type="email" id="email-rec">
-    </div>
-
-    <button class="btn-login" onclick="recuperarSenha()">Enviar link</button>
-    <button class="link-btn" onclick="voltarLogin()">← Voltar</button>
-
-    <div id="msg-rec" class="msg"></div>
-  </div>
-
-  <div class="footer">
-    Somente usuários autorizados.
-  </div>
-
+    <p class="footer">Somente usuários autorizados.</p>
 </div>
 
 <!-- Netlify Identity Widget -->
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
 <script>
-  netlifyIdentity.init();
+    // Inicializa o widget
+    netlifyIdentity.init();
 
-  // Se já estiver logado, redireciona direto
-  netlifyIdentity.on('init', user => {
-    if (user) {
-      window.location.href = '/index.html';
+    // Se já estiver logado, vai direto pro sistema
+    netlifyIdentity.on('init', user => {
+        if (user) {
+            window.location.href = '/index.html';
+        }
+    });
+
+    // Após login ou criação de senha, redireciona
+    netlifyIdentity.on('login', () => {
+        window.location.href = '/index.html';
+    });
+
+    // ✅ Se a URL tiver token de convite ou recuperação de senha,
+    // abre o modal automaticamente para o usuário criar/redefinir a senha
+    if (window.location.hash &&
+        (window.location.hash.includes('invite_token') ||
+         window.location.hash.includes('recovery_token') ||
+         window.location.hash.includes('confirmation_token'))) {
+        netlifyIdentity.open();
     }
-  });
-
-  // Após login bem-sucedido, redireciona
-  netlifyIdentity.on('login', () => {
-    window.location.href = '/index.html';
-  });
-
-  // ✅ ESSENCIAL: detecta token no # da URL (convite ou recuperação de senha)
-  // e abre o modal do Netlify Identity automaticamente
-  if (window.location.hash) {
-    netlifyIdentity.open();
-  }
-
-  // ————— Funções do formulário manual —————
-
-  function fazerLogin() {
-    const email = document.getElementById('email').value.trim();
-    const senha = document.getElementById('senha').value;
-    const msg   = document.getElementById('msg-login');
-    const btn   = document.getElementById('btn');
-
-    if (!email || !senha) {
-      msg.textContent = "Preencha e-mail e senha.";
-      msg.classList.add('show');
-      return;
-    }
-
-    btn.disabled = true;
-    msg.classList.remove('show');
-
-    netlifyIdentity.login(email, senha)
-      .catch(err => {
-        msg.textContent = err.message || "E-mail ou senha incorretos.";
-        msg.classList.add('show');
-        btn.disabled = false;
-      });
-  }
-
-  function recuperarSenha() {
-    const email = document.getElementById('email-rec').value.trim();
-    const msg   = document.getElementById('msg-rec');
-
-    if (!email) {
-      msg.textContent = "Digite seu e-mail.";
-      msg.className = "msg erro show";
-      return;
-    }
-
-    netlifyIdentity.requestPasswordRecovery(email)
-      .then(() => {
-        msg.textContent = "Link enviado! Verifique seu e-mail.";
-        msg.className = "msg sucesso show";
-      })
-      .catch(() => {
-        msg.textContent = "Erro ao enviar. Verifique o e-mail.";
-        msg.className = "msg erro show";
-      });
-  }
-
-  function mostrarRec() {
-    document.getElementById('login-box').style.display = 'none';
-    document.getElementById('rec-box').style.display   = 'block';
-  }
-
-  function voltarLogin() {
-    document.getElementById('rec-box').style.display   = 'none';
-    document.getElementById('login-box').style.display = 'block';
-  }
 </script>
 
 </body>
