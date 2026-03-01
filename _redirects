@@ -1,8 +1,0 @@
-# Redireciona links de convite e recuperação para a tela de login
-# O token fica no hash (#) da URL, então o login.html processa tudo no client-side
-
-# Se acessar a raiz sem estar logado, o JS do index.html redireciona para login
-# Aqui garantimos que links de e-mail do Netlify Identity caiam no login.html
-
-/index.html   /index.html   200
-/login.html   /login.html   200
