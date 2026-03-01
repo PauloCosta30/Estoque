@@ -846,4 +846,29 @@ window.addEventListener('load',()=>{
 })();
 </script>
 </body>
+    <!-- NETLIFY IDENTITY -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+<script>
+  if (window.netlifyIdentity) {
+
+    // Quando carregar a página
+    netlifyIdentity.on("init", user => {
+      if (!user) {
+        // se não estiver logado, vai para login
+        window.location.href = "/login.html";
+      }
+    });
+
+    // Após login, volta para página principal
+    netlifyIdentity.on("login", () => {
+      window.location.href = "/";
+    });
+
+    // Após logout, volta para login
+    netlifyIdentity.on("logout", () => {
+      window.location.href = "/login.html";
+    });
+  }
+</script>
 </html>
