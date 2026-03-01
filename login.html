@@ -1,278 +1,257 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso — BR Costa Engenharia</title>
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acesso — BR Costa Engenharia</title>
 
-        html, body {
-            min-height: 100vh;
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 40px 36px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
+html, body {
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
-        .logo-area {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-        .logo-area .empresa {
-            font-size: 13px;
-            font-weight: bold;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-        }
-        .logo-area h1 {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1e3a5f;
-        }
-        .logo-area p {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 4px;
-        }
-        .divider {
-            height: 2px;
-            background: linear-gradient(90deg, #2563eb, #1e3a5f);
-            border-radius: 2px;
-            margin-bottom: 28px;
-        }
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
 
-        .field { margin-bottom: 16px; }
-        .field label {
-            display: block;
-            font-size: 11px;
-            font-weight: bold;
-            color: #374151;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .field input {
-            width: 100%;
-            border: 1.5px solid #d1d5db;
-            border-radius: 6px;
-            padding: 10px 12px;
-            font-size: 14px;
-            color: #111;
-            transition: border-color 0.15s;
-        }
-        .field input:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-        }
+.logo-area { text-align: center; margin-bottom: 28px; }
+.logo-area .empresa {
+    font-size: 13px;
+    font-weight: bold;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.logo-area h1 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1e3a5f;
+}
+.logo-area p {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 4px;
+}
 
-        .btn-login {
-            width: 100%;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 12px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: background 0.15s;
-        }
-        .btn-login:hover { background: #1d4ed8; }
-        .btn-login:active { background: #1e40af; }
-        .btn-login:disabled { background: #93c5fd; cursor: not-allowed; }
+.divider {
+    height: 2px;
+    background: linear-gradient(90deg, #2563eb, #1e3a5f);
+    border-radius: 2px;
+    margin: 20px 0;
+}
 
-        .msg-erro {
-            display: none;
-            background: #fef2f2;
-            border: 1px solid #fca5a5;
-            border-radius: 6px;
-            padding: 10px 12px;
-            font-size: 12px;
-            color: #dc2626;
-            margin-top: 12px;
-            text-align: center;
-        }
-        .msg-erro.show { display: block; }
+.field { margin-bottom: 16px; }
+.field label {
+    display: block;
+    font-size: 11px;
+    font-weight: bold;
+    color: #374151;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+.field input {
+    width: 100%;
+    border: 1.5px solid #d1d5db;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
+}
+.field input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
 
-        .msg-sucesso {
-            display: none;
-            background: #f0fdf4;
-            border: 1px solid #86efac;
-            border-radius: 6px;
-            padding: 10px 12px;
-            font-size: 12px;
-            color: #16a34a;
-            margin-top: 12px;
-            text-align: center;
-        }
-        .msg-sucesso.show { display: block; }
+.btn-login {
+    width: 100%;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.btn-login:hover { background: #1d4ed8; }
+.btn-login:disabled { background: #93c5fd; }
 
-        .loading {
-            display: inline-block;
-            width: 14px; height: 14px;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            margin-right: 6px;
-            vertical-align: middle;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
+.link-btn {
+    background: none;
+    border: none;
+    color: #2563eb;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
 
-        .footer-txt {
-            text-align: center;
-            font-size: 11px;
-            color: #9ca3af;
-            margin-top: 24px;
-        }
+.msg {
+    display: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 12px;
+    margin-top: 12px;
+    text-align: center;
+}
 
-        /* Link "esqueci senha" */
-        .link-btn {
-            background: none; border: none;
-            color: #2563eb; font-size: 12px;
-            cursor: pointer; text-decoration: underline;
-            margin-top: 8px; display: block; width: 100%; text-align: center;
-        }
-        .link-btn:hover { color: #1d4ed8; }
-    </style>
+.msg.erro {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #dc2626;
+}
+
+.msg.sucesso {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #16a34a;
+}
+
+.msg.show { display: block; }
+
+.footer {
+    text-align: center;
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 20px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="card">
-    <div class="logo-area">
-        <div class="empresa">BR Costa Engenharia</div>
-        <h1>Levantamento Técnico</h1>
-        <p>Acesso restrito — faça login para continuar</p>
-    </div>
-    <div class="divider"></div>
 
-    <div id="tela-login">
-        <div class="field">
-            <label>E-mail</label>
-            <input type="email" id="email" placeholder="seu@email.com" autocomplete="email">
-        </div>
-        <div class="field">
-            <label>Senha</label>
-            <input type="password" id="senha" placeholder="••••••••" autocomplete="current-password">
-        </div>
-        <button class="btn-login" id="btn-entrar" onclick="fazerLogin()">Entrar</button>
-        <button class="link-btn" onclick="mostrarRecuperacao()">Esqueci minha senha</button>
-        <div class="msg-erro" id="msg-erro"></div>
-    </div>
-
-    <div id="tela-recuperacao" style="display:none;">
-        <p style="font-size:12px;color:#374151;margin-bottom:14px;line-height:1.5;">
-            Digite seu e-mail e enviaremos um link para redefinir sua senha.
-        </p>
-        <div class="field">
-            <label>E-mail</label>
-            <input type="email" id="email-rec" placeholder="seu@email.com">
-        </div>
-        <button class="btn-login" onclick="recuperarSenha()">Enviar link</button>
-        <button class="link-btn" onclick="voltarLogin()">← Voltar ao login</button>
-        <div class="msg-erro" id="msg-erro-rec"></div>
-        <div class="msg-sucesso" id="msg-sucesso-rec"></div>
-    </div>
-
-    <div class="footer-txt">
-        Acesso somente para usuários autorizados.<br>
-        Entre em contato com o administrador para solicitar acesso.
-    </div>
+<div class="logo-area">
+<div class="empresa">BR Costa Engenharia</div>
+<h1>Levantamento Técnico</h1>
+<p>Acesso restrito</p>
 </div>
 
-<!-- Netlify Identity Widget -->
+<div class="divider"></div>
+
+<div id="login-box">
+<div class="field">
+<label>E-mail</label>
+<input type="email" id="email">
+</div>
+
+<div class="field">
+<label>Senha</label>
+<input type="password" id="senha">
+</div>
+
+<button class="btn-login" onclick="fazerLogin()" id="btn">Entrar</button>
+<button class="link-btn" onclick="mostrarRec()">Esqueci minha senha</button>
+
+<div id="msg-login" class="msg erro"></div>
+</div>
+
+<div id="rec-box" style="display:none;">
+<div class="field">
+<label>E-mail</label>
+<input type="email" id="email-rec">
+</div>
+
+<button class="btn-login" onclick="recuperarSenha()">Enviar link</button>
+<button class="link-btn" onclick="voltarLogin()">← Voltar</button>
+
+<div id="msg-rec" class="msg"></div>
+</div>
+
+<div class="footer">
+Somente usuários autorizados.
+</div>
+
+</div>
+
+<!-- Netlify Identity -->
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
 <script>
-    // Se já estiver logado, vai direto para o formulário
-    netlifyIdentity.on('init', user => {
-        if (user) window.location.href = '/index.html';
-    });
+netlifyIdentity.init();
 
-    netlifyIdentity.on('login', user => {
+// Se já estiver logado, redireciona
+netlifyIdentity.on('init', user => {
+    if (user) {
         window.location.href = '/index.html';
-    });
+    }
+});
 
-    function fazerLogin() {
-        const email = document.getElementById('email').value.trim();
-        const senha = document.getElementById('senha').value;
-        const btn = document.getElementById('btn-entrar');
-        const erro = document.getElementById('msg-erro');
+// Após login, redireciona
+netlifyIdentity.on('login', () => {
+    window.location.href = '/index.html';
+});
 
-        if (!email || !senha) {
-            erro.textContent = 'Preencha e-mail e senha.';
-            erro.classList.add('show');
-            return;
-        }
+function fazerLogin() {
+    const email = document.getElementById('email').value.trim();
+    const senha = document.getElementById('senha').value;
+    const msg = document.getElementById('msg-login');
+    const btn = document.getElementById('btn');
 
-        btn.disabled = true;
-        btn.innerHTML = '<span class="loading"></span>Entrando...';
-        erro.classList.remove('show');
-
-        netlifyIdentity.store.user = null;
-        netlifyIdentity.login(email, senha)
-            .catch(err => {
-                erro.textContent = 'E-mail ou senha incorretos. Tente novamente.';
-                erro.classList.add('show');
-                btn.disabled = false;
-                btn.textContent = 'Entrar';
-            });
+    if (!email || !senha) {
+        msg.textContent = "Preencha e-mail e senha.";
+        msg.classList.add('show');
+        return;
     }
 
-    function recuperarSenha() {
-        const email = document.getElementById('email-rec').value.trim();
-        const erro = document.getElementById('msg-erro-rec');
-        const sucesso = document.getElementById('msg-sucesso-rec');
+    btn.disabled = true;
+    msg.classList.remove('show');
 
-        if (!email) {
-            erro.textContent = 'Digite seu e-mail.';
-            erro.classList.add('show');
-            return;
-        }
+    netlifyIdentity.login(email, senha)
+        .catch(err => {
+            msg.textContent = err.message;
+            msg.classList.add('show');
+            btn.disabled = false;
+        });
+}
 
-        netlifyIdentity.requestPasswordRecovery(email)
-            .then(() => {
-                sucesso.textContent = 'Link enviado! Verifique seu e-mail.';
-                sucesso.classList.add('show');
-                erro.classList.remove('show');
-            })
-            .catch(() => {
-                erro.textContent = 'E-mail não encontrado.';
-                erro.classList.add('show');
-            });
+function recuperarSenha() {
+    const email = document.getElementById('email-rec').value.trim();
+    const msg = document.getElementById('msg-rec');
+
+    if (!email) {
+        msg.textContent = "Digite seu e-mail.";
+        msg.className = "msg erro show";
+        return;
     }
 
-    function mostrarRecuperacao() {
-        document.getElementById('tela-login').style.display = 'none';
-        document.getElementById('tela-recuperacao').style.display = 'block';
-    }
+    netlifyIdentity.requestPasswordRecovery(email)
+        .then(() => {
+            msg.textContent = "Link enviado! Verifique seu e-mail.";
+            msg.className = "msg sucesso show";
+        })
+        .catch(() => {
+            msg.textContent = "Erro ao enviar. Verifique o e-mail.";
+            msg.className = "msg erro show";
+        });
+}
 
-    function voltarLogin() {
-        document.getElementById('tela-recuperacao').style.display = 'none';
-        document.getElementById('tela-login').style.display = 'block';
-    }
+function mostrarRec() {
+    document.getElementById('login-box').style.display = 'none';
+    document.getElementById('rec-box').style.display = 'block';
+}
 
-    // Enter para logar
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Enter' && document.getElementById('tela-login').style.display !== 'none') {
-            fazerLogin();
-        }
-    });
+function voltarLogin() {
+    document.getElementById('rec-box').style.display = 'none';
+    document.getElementById('login-box').style.display = 'block';
+}
 </script>
+
 </body>
 </html>
