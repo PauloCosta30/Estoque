@@ -441,10 +441,184 @@
                 padding: 3px 8mm;
                 background: white;
             }
+            #login-screen { display: none !important; }
         }
+
+        /* ============================================================
+           TELA DE LOGIN
+        ============================================================ */
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        #login-screen.hidden { display: none !important; }
+
+        .login-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 36px 36px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            position: relative;
+            animation: loginFadeIn 0.4s ease;
+        }
+        @keyframes loginFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-logo-area {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .login-logo-area img {
+            max-width: 160px;
+            max-height: 60px;
+            object-fit: contain;
+        }
+        .login-logo-area .login-subtitle {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .login-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .login-field {
+            margin-bottom: 16px;
+        }
+        .login-field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        .login-field input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 14px;
+            color: #111827;
+            background: #f9fafb;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        .login-field input:focus {
+            outline: none;
+            border-color: #1e3a5f;
+            box-shadow: 0 0 0 3px rgba(30,58,95,0.12);
+            background: white;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #1e3a5f;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            letter-spacing: 0.3px;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .login-btn:hover { background: #152d4a; }
+        .login-btn:active { transform: scale(0.98); }
+
+        .login-error {
+            display: none;
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+            border-radius: 6px;
+            padding: 9px 12px;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 12px;
+        }
+        .login-error.show { display: block; }
+
+        .login-user-badge {
+            position: fixed;
+            top: 10px;
+            right: 14px;
+            background: rgba(30,58,95,0.9);
+            color: white;
+            border-radius: 20px;
+            padding: 4px 14px 4px 10px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        .login-user-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
+        .btn-logout {
+            background: rgba(255,255,255,0.18);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 10px;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+        .btn-logout:hover { background: rgba(255,255,255,0.3); }
     </style>
 </head>
 <body>
+
+<!-- ============================================================
+     TELA DE LOGIN
+============================================================ -->
+<div id="login-screen">
+    <div class="login-card">
+        <div class="login-logo-area">
+            <div style="font-size:22px; font-weight:800; color:#1e3a5f; letter-spacing:1px;">SUPERGASBRAS</div>
+            <div class="login-subtitle">Levantamento Técnico</div>
+        </div>
+        <div class="login-title">Acesso ao Sistema</div>
+        <div class="login-field">
+            <label for="login-user">Usuário</label>
+            <input type="text" id="login-user" placeholder="Digite seu usuário" autocomplete="username" autocapitalize="none">
+        </div>
+        <div class="login-field">
+            <label for="login-pass">Senha</label>
+            <input type="password" id="login-pass" placeholder="Digite sua senha" autocomplete="current-password">
+        </div>
+        <button class="login-btn" onclick="doLogin()">Entrar</button>
+        <div class="login-error" id="login-error">Usuário ou senha incorretos.</div>
+    </div>
+</div>
+
+<!-- Badge do usuário logado (aparece após login) -->
+<div class="login-user-badge no-print" id="user-badge" style="display:none;">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+    </svg>
+    <span id="badge-name">-</span>
+    <button class="btn-logout" onclick="doLogout()">Sair</button>
+</div>
 
 <!-- Overlay e picker de pontuação -->
 <div class="picker-overlay" id="overlay" onclick="closeAllPickers()"></div>
@@ -844,6 +1018,71 @@ window.addEventListener('load',()=>{
     const hora = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
     document.getElementById('print-footer').textContent = `${data}  ${hora}`;
 })();
+</script>
+
+<!-- ============================================================
+     SISTEMA DE LOGIN — ADICIONE/EDITE USUÁRIOS AQUI ABAIXO
+============================================================ -->
+<script>
+/*
+ * ╔══════════════════════════════════════════════════════════╗
+ * ║  LISTA DE USUÁRIOS — edite à vontade                    ║
+ * ║  Formato: { usuario: "...", senha: "...", nome: "..." } ║
+ * ╚══════════════════════════════════════════════════════════╝
+ */
+const USUARIOS = [
+    { usuario: "admin",      senha: "super123",  nome: "Administrador"    },
+    { usuario: "joao",       senha: "joao2024",  nome: "João Silva"       },
+    { usuario: "maria",      senha: "maria2024", nome: "Maria Oliveira"   },
+    { usuario: "tecnico1",   senha: "tec@1234",  nome: "Técnico Campo 01" },
+    { usuario: "tecnico2",   senha: "tec@5678",  nome: "Técnico Campo 02" },
+    /* Adicione quantos usuários quiser abaixo: */
+    // { usuario: "nome_usuario", senha: "senha_aqui", nome: "Nome Completo" },
+];
+
+/* ── Funções de login ─────────────────────────────────────── */
+function doLogin() {
+    const u = document.getElementById('login-user').value.trim().toLowerCase();
+    const p = document.getElementById('login-pass').value;
+    const found = USUARIOS.find(x => x.usuario.toLowerCase() === u && x.senha === p);
+    if (found) {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('user-badge').style.display = 'flex';
+        document.getElementById('badge-name').textContent = found.nome;
+        sessionStorage.setItem('sg_user', found.nome);
+    } else {
+        const err = document.getElementById('login-error');
+        err.classList.add('show');
+        document.getElementById('login-pass').value = '';
+        document.getElementById('login-pass').focus();
+        setTimeout(() => err.classList.remove('show'), 3000);
+    }
+}
+
+function doLogout() {
+    sessionStorage.removeItem('sg_user');
+    document.getElementById('user-badge').style.display = 'none';
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.getElementById('login-user').value = '';
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-user').focus();
+}
+
+/* ── Enter nos campos ─────────────────────────────────────── */
+document.getElementById('login-user').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('login-pass').focus(); });
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+/* ── Verifica sessão ao carregar ──────────────────────────── */
+window.addEventListener('load', () => {
+    const saved = sessionStorage.getItem('sg_user');
+    if (saved) {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('user-badge').style.display = 'flex';
+        document.getElementById('badge-name').textContent = saved;
+    } else {
+        document.getElementById('login-user').focus();
+    }
+});
 </script>
 </body>
 </html>
