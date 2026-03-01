@@ -137,120 +137,128 @@ html, body {
 
 <div class="card">
 
-<div class="logo-area">
-<div class="empresa">BR Costa Engenharia</div>
-<h1>Levantamento Técnico</h1>
-<p>Acesso restrito</p>
+  <div class="logo-area">
+    <div class="empresa">BR Costa Engenharia</div>
+    <h1>Levantamento Técnico</h1>
+    <p>Acesso restrito</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div id="login-box">
+    <div class="field">
+      <label>E-mail</label>
+      <input type="email" id="email">
+    </div>
+
+    <div class="field">
+      <label>Senha</label>
+      <input type="password" id="senha">
+    </div>
+
+    <button class="btn-login" onclick="fazerLogin()" id="btn">Entrar</button>
+    <button class="link-btn" onclick="mostrarRec()">Esqueci minha senha</button>
+
+    <div id="msg-login" class="msg erro"></div>
+  </div>
+
+  <div id="rec-box" style="display:none;">
+    <div class="field">
+      <label>E-mail</label>
+      <input type="email" id="email-rec">
+    </div>
+
+    <button class="btn-login" onclick="recuperarSenha()">Enviar link</button>
+    <button class="link-btn" onclick="voltarLogin()">← Voltar</button>
+
+    <div id="msg-rec" class="msg"></div>
+  </div>
+
+  <div class="footer">
+    Somente usuários autorizados.
+  </div>
+
 </div>
 
-<div class="divider"></div>
-
-<div id="login-box">
-<div class="field">
-<label>E-mail</label>
-<input type="email" id="email">
-</div>
-
-<div class="field">
-<label>Senha</label>
-<input type="password" id="senha">
-</div>
-
-<button class="btn-login" onclick="fazerLogin()" id="btn">Entrar</button>
-<button class="link-btn" onclick="mostrarRec()">Esqueci minha senha</button>
-
-<div id="msg-login" class="msg erro"></div>
-</div>
-
-<div id="rec-box" style="display:none;">
-<div class="field">
-<label>E-mail</label>
-<input type="email" id="email-rec">
-</div>
-
-<button class="btn-login" onclick="recuperarSenha()">Enviar link</button>
-<button class="link-btn" onclick="voltarLogin()">← Voltar</button>
-
-<div id="msg-rec" class="msg"></div>
-</div>
-
-<div class="footer">
-Somente usuários autorizados.
-</div>
-
-</div>
-
-<!-- Netlify Identity -->
+<!-- Netlify Identity Widget -->
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
 <script>
-netlifyIdentity.init();
+  netlifyIdentity.init();
 
-// Se já estiver logado, redireciona
-netlifyIdentity.on('init', user => {
+  // Se já estiver logado, redireciona direto
+  netlifyIdentity.on('init', user => {
     if (user) {
-        window.location.href = '/index.html';
+      window.location.href = '/index.html';
     }
-});
+  });
 
-// Após login, redireciona
-netlifyIdentity.on('login', () => {
+  // Após login bem-sucedido, redireciona
+  netlifyIdentity.on('login', () => {
     window.location.href = '/index.html';
-});
+  });
 
-function fazerLogin() {
+  // ✅ ESSENCIAL: detecta token no # da URL (convite ou recuperação de senha)
+  // e abre o modal do Netlify Identity automaticamente
+  if (window.location.hash) {
+    netlifyIdentity.open();
+  }
+
+  // ————— Funções do formulário manual —————
+
+  function fazerLogin() {
     const email = document.getElementById('email').value.trim();
     const senha = document.getElementById('senha').value;
-    const msg = document.getElementById('msg-login');
-    const btn = document.getElementById('btn');
+    const msg   = document.getElementById('msg-login');
+    const btn   = document.getElementById('btn');
 
     if (!email || !senha) {
-        msg.textContent = "Preencha e-mail e senha.";
-        msg.classList.add('show');
-        return;
+      msg.textContent = "Preencha e-mail e senha.";
+      msg.classList.add('show');
+      return;
     }
 
     btn.disabled = true;
     msg.classList.remove('show');
 
     netlifyIdentity.login(email, senha)
-        .catch(err => {
-            msg.textContent = err.message;
-            msg.classList.add('show');
-            btn.disabled = false;
-        });
-}
+      .catch(err => {
+        msg.textContent = err.message || "E-mail ou senha incorretos.";
+        msg.classList.add('show');
+        btn.disabled = false;
+      });
+  }
 
-function recuperarSenha() {
+  function recuperarSenha() {
     const email = document.getElementById('email-rec').value.trim();
-    const msg = document.getElementById('msg-rec');
+    const msg   = document.getElementById('msg-rec');
 
     if (!email) {
-        msg.textContent = "Digite seu e-mail.";
-        msg.className = "msg erro show";
-        return;
+      msg.textContent = "Digite seu e-mail.";
+      msg.className = "msg erro show";
+      return;
     }
 
     netlifyIdentity.requestPasswordRecovery(email)
-        .then(() => {
-            msg.textContent = "Link enviado! Verifique seu e-mail.";
-            msg.className = "msg sucesso show";
-        })
-        .catch(() => {
-            msg.textContent = "Erro ao enviar. Verifique o e-mail.";
-            msg.className = "msg erro show";
-        });
-}
+      .then(() => {
+        msg.textContent = "Link enviado! Verifique seu e-mail.";
+        msg.className = "msg sucesso show";
+      })
+      .catch(() => {
+        msg.textContent = "Erro ao enviar. Verifique o e-mail.";
+        msg.className = "msg erro show";
+      });
+  }
 
-function mostrarRec() {
+  function mostrarRec() {
     document.getElementById('login-box').style.display = 'none';
-    document.getElementById('rec-box').style.display = 'block';
-}
+    document.getElementById('rec-box').style.display   = 'block';
+  }
 
-function voltarLogin() {
-    document.getElementById('rec-box').style.display = 'none';
+  function voltarLogin() {
+    document.getElementById('rec-box').style.display   = 'none';
     document.getElementById('login-box').style.display = 'block';
-}
+  }
 </script>
 
 </body>
